@@ -36,15 +36,15 @@ done.*
 
     - Patch submitted to official MOM codebase, tenatively approved
 
-  - Porting to FX10
+  - Porting to Fujistu compilers (and FX10):
 
-    - Patch submitted and accepted in MOM codebase
+    - Patch submitted and accepted into MOM codebase
 
 
 2104Q4 (ongoing)
 ----------------
 
-- MOM: (1 week)
+- MOM: (2 weeks)
 
   - Construct MOM's MPI communication model (*partially complete*)
 
@@ -83,7 +83,7 @@ done.*
   - Scale beyond 2500 CPUs
     (or determine why it is not possible)
 
-- N96/1.0° ACCESS-CM (2 weeks)
+- N96/1.0° ACCESS-CM (1 week)
 
   **Collaborators**: Hailin Yan, Martin Dix, Nicholas Hannah
 
@@ -115,7 +115,7 @@ done.*
 
   - Confirm scalability and effectiveness of 0.25° changes
 
-- N96L38/1.0° ACCESS-CM: (4 weeks)
+- N96/1.0° ACCESS-CM: (4 weeks)
 
   **Collaborators**: Hailin Yan, Martin Dix, Nicholas Hannah
 
@@ -137,7 +137,7 @@ done.*
 2015Q2
 ------
 
-- Port OFAM to 0.1° grid (2 weeks; optional)
+- Port OFAM to 0.1° grid (2 weeks)
 
   **Collaborators**: Justin Freeman, Russ Fiedler
 
@@ -162,25 +162,31 @@ done.*
 
   - Placeholder for any ongoing 0.1° ACCESS-OM issues
 
-- N216/0.25 ACCESS-CM
+- N96/0.25 ACCESS-CM (3 weeks)
 
-  - Port existing 0.25° ACCESS-OM work to ACCESS-CM
+  - Port existing 0.25° ACCESS-OM work into a working ACCESS-CM with
+    low-resolution atmosphere
 
-  - Initial scalability tests; confirm if CMIP6 runs are possible
+  - Initial scalability tests
 
 
 2015H2
 ------
 
-- N216/0.25° ACCESS-CM
+Without specifying detail, the focus of this period should be on an
+implementation and scaling of a high-resolution atmosphere with a
+high-resolution ocean
 
-  - Focus on any chnages
+- N216/0.25° ACCESS-CM development
+
+- Resolve any outstanding issues from previous periods
 
 
 2016H1
 ------
 
--
+This period should focus on adopting new technologies and preparing for
+machines beyond Raijin
 
 - MOM:
 
