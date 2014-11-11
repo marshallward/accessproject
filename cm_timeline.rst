@@ -162,12 +162,16 @@ done.*
 
   - Placeholder for any ongoing 0.1° ACCESS-OM issues
 
-- N96/0.25 ACCESS-CM (3 weeks)
+- N96/0.25° ACCESS-CM (3 weeks)
 
   - Port existing 0.25° ACCESS-OM work into a working ACCESS-CM with
     low-resolution atmosphere
 
   - Initial scalability tests
+
+- 3+ weeks available to resolve outstanding or unexpected issues
+
+  - Optionally, investigate a N216/1.0° ACCESS-CM configuration
 
 
 2015H2
