@@ -1,10 +1,12 @@
 Timeline
 ========
 
+*NOTE: 2014 goes into greater detail since much of the work has already been
+done.*
+
+
 2014Q3 (*complete*)
 -------------------
-
-*NOTE: Greater detail since this work has been done*
 
 - 0.25° MOM-SIS:
 
@@ -16,7 +18,7 @@ Timeline
 
   - Land masking
 
-    - Reduced CPU hours by 20%
+    - Confirmed reduction of CPU hours by 20%
 
   - Potential energy optimization
 
@@ -34,9 +36,9 @@ Timeline
 2104Q4 (ongoing)
 ----------------
 
-*NOTE: Greater detail since much of this work has been done*
+- MOM:
 
-- Construct MOM communication model
+  - Construct MOM's MPI communication model
 
 - 0.25° MOM-SIS: (*complete*)
 
@@ -46,7 +48,7 @@ Timeline
 
     - MOM scalability up to 2000 CPUs (beyond?)
 
-    - SIS, Coupler bottlenecks at 500 CPUs
+    - Diagnosis of SIS & coupler bottlenecks at 500 CPUs
 
 - 0.1° MOM-SIS:
 
@@ -55,6 +57,7 @@ Timeline
   - Complete port to Raijin (*complete*)
 
   - Scale beyond 2500 CPUs
+    (or determine why it is not possible)
 
 - 0.25° ACCESS-OM:
 
@@ -68,6 +71,14 @@ Timeline
 
   - Initial profiling
 
+- 1.0° ACCESS-CM
+
+  **Collaborators**: Hailin Yan, Martin Dix, Nicholas Hannah
+
+  - Run and compile with updated codebases
+
+  - Develop procedure for coupled scaling analysis
+
 
 2015Q1
 ------
@@ -76,9 +87,13 @@ Timeline
 
 - 0.1° ACCESS-OM:
 
+  **Collaborators**: Nicholas Hannah, Aidan Heerdegen
+
   - Initial port
 
 - OFAM port to 0.1° grid
+
+  **Collaborators**: Justin Freeman, Russ Fiedler
 
 - MOM:
 
@@ -86,31 +101,43 @@ Timeline
 
     - Currently one per timestep, change to one per write
 
-  - Construct memory model
+- N96L38/1.0° ACCESS-CM:
+
+  - Updated UM (9.x)
+
+  - Implement IO server (preparation for N216/0.25°)
 
 
 2015Q2
 ------
 
-*
+- 0.1° ACCESS-OM:
+
+  - Scaling and profiling analysis
+
+  - Bottleneck diagnosis
+
+- 1.0° ACCESS-CM
+
+  - Scaling and profiling analysis
+
+  - Bottleneck diagnosis
 
 
-2015Q3
+2015H2
 ------
 
-*
+- 0.25° ACCESS-CM
+  -
 
 
-2015Q4
+2016H1
 ------
-*
 
+- MOM:
 
-2016Q1
-------
-*
+  - Xeon Phi scaling tests
 
+  - MOM6 initial testing
 
-2016Q2
-------
-*
+  - Scalability tests on off-site FX10 and post-FX10 platforms
