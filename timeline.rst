@@ -125,6 +125,18 @@ done.*
 
   - Assess any changes to scaling and profiling results
 
+- MOM: (2 weeks; optional)
+
+  - Optimise Allreduce operations in time-mean IO writes
+
+    - Currently one per timestep, change to one per write
+
+  - Organise a "MOM user's group" meeting to prepare for Q2 collaborations
+
+
+2015Q2
+------
+
 - Port OFAM to 0.1° grid (2 weeks; optional)
 
   **Collaborators**: Justin Freeman, Russ Fiedler
@@ -138,16 +150,6 @@ done.*
 
   - Investigate any potential IO issues unique to OFAM
 
-- MOM: (2 weeks; optional)
-
-  - Optimise Allreduce operations in time-mean IO writes
-
-    - Currently one per timestep, change to one per write
-
-
-2015Q2
-------
-
 - 0.1° ACCESS BGC: (2 weeks)
 
   **Collaborators**: Richard Matear, Matt Chamberlain, Russ Fiedler
@@ -156,28 +158,29 @@ done.*
 
   - Confirm configuration and scalability of results
 
-- 0.1° ACCESS-OM:
+- 0.1° ACCESS-OM: (2 weeks; optional)
 
-  - Scaling and profiling analysis
+  - Placeholder for any ongoing 0.1° ACCESS-OM issues
 
-  - Bottleneck diagnosis
+- N216/0.25 ACCESS-CM
 
-- 1.0° ACCESS-CM
+  - Port existing 0.25° ACCESS-OM work to ACCESS-CM
 
-  - Scaling and profiling analysis
-
-  - Bottleneck diagnosis
+  - Initial scalability tests; confirm if CMIP6 runs are possible
 
 
 2015H2
 ------
 
-- 0.25° ACCESS-CM
-  -
+- N216/0.25° ACCESS-CM
+
+  - Focus on any chnages
 
 
 2016H1
 ------
+
+-
 
 - MOM:
 
