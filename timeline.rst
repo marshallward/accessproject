@@ -82,11 +82,11 @@ Timeline
 
 - MOM:
 
-   - Optimise Allreduce operations in time-mean IO writes
+  - Optimise Allreduce operations in time-mean IO writes
 
-     - Currently one per timestep, change to one per write
+    - Currently one per timestep, change to one per write
 
-   - Construct memory model
+  - Construct memory model
 
 
 2015Q2

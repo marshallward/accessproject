@@ -85,29 +85,41 @@ impeded both development and troubleshooting issues on Raijin.
 The following projects require a 0.25° grid:
 
 * ACCESS-OM (ARCCSS)
+
 * ACCESS-CM (CSIRO, BoM)
 
 The following projects require a 0.1° grid:
 
 * ACCESS-OM (ARCCSS)
+
 * OFAM v2 (BoM)
+
 * CSIRO BGC model (CSIRO)
 
 We highlight the following goals:
 
 * Establish a single, common point for the following resources:
+
   - Model source codes
+
   - Support libraries
+
   - Experiment configurations
+
   - Runscripts
+
   - Automated logging of experiments
+
   - Output archival
 
 NCI's role:
 
 * Confirm that the five projects run under the established MOM github codebase
+
 * Ensure that datasets and configurations are accessible across projects
+
 * Provide independent scaling of current codebases
+
 * Communicate configuration settings through common runscripts
 
 
@@ -118,9 +130,13 @@ Profiling
   model configuration:
 
   * Communication (MPI)
+
     - Number of messages
+
     - Size of messages
+
     - Classification by physical parameterisation
+
     - Develop network usage
 
   * Computational memory usage
