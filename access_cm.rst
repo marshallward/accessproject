@@ -42,7 +42,9 @@ stage may not reflect the future state of these projects.
 * ARCCSS oceans intend to replace MOM-SIS with ACCESS-OM, and eventually
   ACCESS-CM, as part of ongoing efforts to coordinate resources with CAWCR
 
-* NCI has identified limits to SIS scalability, and ARCCSS will have to adopt
+* NCI has identified limits to SIS scalability, and ARCCSS will have to adopt a
+  new coupled framework in order to efficiently scale up to 0.1° resolution and
+  beyond.
 
 
 Proposed Goals
@@ -64,8 +66,11 @@ NCI's role would be the following:
 
 * Ensure that these models receive sufficient access to system resources and
   expertise within NCI to get them running
+
 * Aggressively tackle the scalability during and after development
+
 * Identify the scaling bottlenecks and limits to scalability
+
 * Patch model source codes to resolve bottlenecks if possible
 
 
