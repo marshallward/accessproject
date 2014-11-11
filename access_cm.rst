@@ -8,22 +8,23 @@ Background
 
 ACCESS-CM is the climate model of the ACCESS model suite, consisting of the UM,
 MOM and CICE submodels, and the OASIS3-MCT coupler library.  All models include
-custom modifications to include OASIS support and conversions of the coupling
-fields.  The model has principally been used to produce contributions to the
-CMIP5 study, and was considered highly successful (elaborate?).  It is also
-been embraced by BoM and ARCCSS as a research tool in several investigations.
+custom modifications to support OASIS communication and coupling field
+conversions.  The model has primarily been used to produce submissions to the
+CMIP5 study, which were regarded as highly successful contributions
+(elaborate?).  It is also been used by BoM and ARCCSS as a research tool in
+various studies.
 
-ACCESS-OM is an intermediate model, where the UM coupling fields are
-replaced with the CORE atmospheric field data sets.  It is primarily used for
-testing within CSIRO during CM development, although it has also been used in
-some research projects, such as CSIRO's BGC simulations (WOMBAT?).
+ACCESS-OM is an intermediate model which replaces the UM model with the fixed
+CORE atmospheric field data sets.  It is primarily used for testing within
+CSIRO during CM development, although it has also been used in some research
+projects, such as CSIRO's BGC simulations (WOMBAT?).
 
 The ARCCSS ("CoE") ocean research groups is conducting 0.25°-resolution ocean
 experiments with the GFDL coupled model based on MOM and SIS, the internal GFDL
 sea ice model.  The model has been used as part of several well-received
 academic publications, and remains an integral part of ongoing research.
 
-OFAM is a
+OFAM is an ocean data assimilation model used and developed within BoM. (TODO)
 
 
 Motivation
