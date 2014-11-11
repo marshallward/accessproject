@@ -9,10 +9,9 @@ Background
 ACCESS-CM is the climate model of the ACCESS model suite, consisting of the UM,
 MOM and CICE submodels, and the OASIS3-MCT coupler library.  All models include
 custom modifications to support OASIS communication and coupling field
-conversions.  The model has primarily been used to produce submissions to the
-CMIP5 study, which were regarded as highly successful contributions
-(elaborate?).  It is also been used by BoM and ARCCSS as a research tool in
-various studies.
+conversions.  The model has primarily been used to produce Australian
+submissions to CMIP5, which were regarded as highly successful contributions.
+It is also been used by BoM and ARCCSS as a research tool in various studies.
 
 ACCESS-OM is an intermediate model which replaces the UM model with the fixed
 CORE atmospheric field data sets.  It is primarily used for testing within
@@ -36,7 +35,7 @@ to be used in future studies.  Any formal profiling and scaling work at this
 stage may not reflect the future state of these projects.
 
 * ACCESS-CM and ACCESS-OM are currently being redeveloped in preparation for
-  CMIP6 and support for higher resolutions, along with ARCCSS feedback via
+  CMIP6 and support for higher resolutions, along with ARCCSS contributions via
   Nicholas Hannah
 
 * ARCCSS oceans intend to replace MOM-SIS with ACCESS-OM, and eventually
@@ -54,13 +53,13 @@ Proposed Goals
 Porting
 -------
 
-The following are immediate potential goals:
+The following are immediate potential goals, some of which are near completion:
 
-* Port the 0.1° global MOM-SIS model to Raijin
+* Port the 0.1° global MOM-SIS model to Raijin, and scale beyond 2500 CPUs
 
-* Convert 0.25° global MOM-SIS to ACCESS-OM (MOM-CICE) framework
+* Convert 0.25° global MOM-SIS to an updated ACCESS-OM (MOM-CICE) framework
 
-* Convert 0.1° global MOM-SIS to ACCESS-OM framework
+* Convert 0.1° global MOM-SIS to updated ACCESS-OM framework
 
 NCI's role would be the following:
 
@@ -72,6 +71,16 @@ NCI's role would be the following:
 * Identify the scaling bottlenecks and limits to scalability
 
 * Patch model source codes to resolve bottlenecks if possible
+
+Once these models have reached a sufficient state of
+foundations for the following projects:
+
+* Integration of updated ACCESS-OM into an updated ACCESS-CM framework
+
+* Porting N96/1.0° ACCESS-CM to the updated ACCESS-CM framework
+
+* Development of a N216/0.25° ACCESS-CM model
+
 
 
 Consolidation
@@ -88,7 +97,7 @@ The following projects require a 0.25° grid:
 
 * ACCESS-CM (CSIRO, BoM)
 
-The following projects require a 0.1° grid:
+The following projects require a common 0.1° grid:
 
 * ACCESS-OM (ARCCSS)
 
@@ -114,7 +123,7 @@ We highlight the following goals:
 
 NCI's role:
 
-* Confirm that the five projects run under the established MOM github codebase
+* Confirm that the five projects run under the established MOM codebase
 
 * Ensure that datasets and configurations are accessible across projects
 

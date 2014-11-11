@@ -44,6 +44,9 @@ done.*
 2104Q4 (ongoing)
 ----------------
 
+The focus of this term is to resolve any outstanding issues in high-resolution
+ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
+
 - MOM: (2 weeks)
 
   - Construct MOM's MPI communication model (*partially complete*)
@@ -97,6 +100,14 @@ done.*
 2015Q1
 ------
 
+The focus of this term should be to finalise the transition to ACCESS-OM and to
+integrate these changes into ACCESS-CM.  This also include porting the existing
+N96/1.0° model to the new framework.  NCI's priority should be to address any
+performance issues at each stage.
+
+Given the many challenges associated with this goal, we should prepare for some
+of this work to extend to Q2.
+
 - 0.25° ACCESS-OM: (3 weeks)
 
   **Collaborator**: Nicholas Hannah
@@ -113,7 +124,7 @@ done.*
 
   - Port 0.1° MOM-SIS to ACCESS-OM
 
-  - Confirm scalability and effectiveness of 0.25° changes
+  - Confirm that improvements at 0.25° continue at 0.1° resolution
 
 - N96/1.0° ACCESS-CM: (4 weeks)
 
@@ -137,12 +148,12 @@ done.*
 2015Q2
 ------
 
-- Port OFAM to 0.1° grid (2 weeks)
+The focus of this term is to communicate our work to external projects in BoM
+and CSIRO, namely OFAM and CSIRO's BGC model.
+
+- Port OFAM to 0.1° global grid (2 weeks)
 
   **Collaborators**: Justin Freeman, Russ Fiedler
-
-  *Note*: NCI would primarily be advisory, ensuring that grids are common and
-  encouraging scalability of model configurations
 
   - Develop a common 0.1° grid for OFAM and ACCESS-OM
 
