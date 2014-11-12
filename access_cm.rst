@@ -8,10 +8,11 @@ Background
 
 ACCESS-CM is the climate model of the ACCESS model suite, consisting of the UM,
 MOM and CICE submodels, and the OASIS3-MCT coupler library.  All models include
-custom modifications to support OASIS communication and coupling field
-conversions.  The model has primarily been used to produce Australian
-submissions to CMIP5, which were regarded as highly successful contributions.
-It is also been used by BoM and ARCCSS as a research tool in various studies.
+custom modifications to support OASIS communication and additional conversions
+of the coupling fields.  The model has primarily been used to produce
+Australian submissions to CMIP5, which were regarded as highly successful
+contributions.  It is also been used by BoM and ARCCSS as a research tool in
+various studies.
 
 ACCESS-OM is an intermediate model which replaces the UM model with the fixed
 CORE atmospheric field data sets.  It is primarily used for testing within
@@ -23,16 +24,21 @@ experiments with the GFDL coupled model based on MOM and SIS, the internal GFDL
 sea ice model.  The model has been used as part of several well-received
 academic publications, and remains an integral part of ongoing research.
 
-OFAM is an ocean data assimilation model used and developed within BoM. (TODO)
+OFAM is an ocean data assimilation model used and developed within CSIRO and
+BoM.  The current version is based on a 0.1° grid with near-global coverage
+excepting the Arctic seas.  The model is used operationally within BoM
+(Australian Navy?).
 
 
 Motivation
 ==========
 
 As part of preparation for CMIP6, ACCESS-CM and ACCESS-OM are currently in a
-state of redevelopment, and they lack stable experiment configurations that are
-to be used in future studies.  Any formal profiling and scaling work at this
-stage may not reflect the future state of these projects.
+state of redevelopment, and they lack stable experiment configurations that can
+used for scaling analysis.  Any formal profiling and scaling work at this stage
+may not reflect the future state of these projects.
+
+Additional points:
 
 * ACCESS-CM and ACCESS-OM are currently being redeveloped in preparation for
   CMIP6 and support for higher resolutions, along with ARCCSS contributions via
