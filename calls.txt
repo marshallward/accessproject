@@ -1,0 +1,162 @@
+ISend
+=====
+
+3371728 sends (roughly, varies by process)
+
+   - 2027984   mpp_do_check_r8_3d      # Scalar1
+   - 1297536   mpp_do_update_r8_3dv    # Vector
+   -   22320   mpp_do_update_r8_3d     # Scalar2
+   -   10421+5 put_side1_to_xgrid      # Coupling
+   -    7448   get_side1_from_xgrid    # Coupling
+   -    2976+3 put_1_to_xgrid_order_2  # Coupling
+   -    2976   cut_check               # Ice
+   -      62   load_xgrid              # Coupling
+   -       2   set_comm_get1           # Coupling
+
+Scalar1
+-------
+
+mpp_do_check_r8_3d:
+   - 2027984 mpp_send calls
+      = 8 adj. tiles * 253498 fields
+   from:
+      - 202887:   mpp_update_domain2d_r8_2d
+      -  46147:   mpp_update_domain2d_r8_3d
+      -   4464:   mpp_update_domain2d_r8_4d
+
+mpp_update_domain2d_r8_2d:
+
+   - 420140 calls
+   - Contains 202887 mpp_do_check calls
+
+   ice_dyn_mod_mp_ice_dynamics:
+      - 321408 calls
+      - ``nsteps_dyn`` * 3 calls to ``mpp_update_domain``
+
+      - Called once from ``ice_model_mp_update_ice_model_slow``
+         - called once from ``ice_model_mp_update_ice_model_slow_dn``
+            - called ``nt_cpl`` times in ``coupler_main``
+
+      - Total:
+         = ``nt_cpl`` * ``nsteps_dyn``
+            * {``sig11``, ``sig12``, ``sig22``}
+         = 1488 * 72 * 3~
+         = 321408
+
+      - Buffered:
+         = ``nt_cpl`` * ``nsteps_dyn`` * 1
+         = 107136
+
+   (Sum: 321408)
+   (Buf: 107136)
+
+   ice_grid_mod_mp_ice_advect:
+      - 37200 calls
+
+      - 5 * ``nsteps_adv`` calls to ``mpp_update_domain``
+
+      - Called (``num_part`` - 1) times in ``ice_model_mp_transport``
+         - Called once in ``ice_model_mp_update_ice_model_slow``
+
+      - Total:
+         = nt * (num_part - 1) * nsteps_adv
+            * (part_size, h_snow, h_ice, t_ice1, t_ice2)
+         = 1488 * 5 * 5 * 1
+         = 37200
+
+   (Sum: 358608)
+   (Buf: 144336)
+
+   ocean_barotropic_mod_mp_pred_corr_tropic_depth_bgrid:
+      - 29760 calls
+
+      - 29760:    ocean_barotropic_mod_mp_pred_corr_tropic_depth_bgrid
+
+      - Total:
+         = nt * (
+            ([barotropic_halo > 1] *
+               ({[geopotential] * rho_g, patm_bt, steady_forcing, eta_t_bt}~
+                  + thicku_bt))
+             + 2 * barotropic_split * ([use_legacy_barotropic_halos] eta_t_bt
+                      + [smooth_eta_t_bt_biharmonic] eta_t_bt)
+             + (2 * barotropic_split / barotropic_halo) * eta_t_bt
+
+         = 1488 * (3~ + 1 + 16 * (0 + 0 + 1))
+         = 29760
+
+      - Buffered:
+         = 1488 * (1 + 1 + 16)
+         = 26784
+
+   (Sum: 388368)
+   (Buf: 171120)
+
+   ocean_barotropic_mod_mp_ocean_eta_smooth
+      - 8928 calls
+
+         = 1488 * (3 + 3)
+         = Nt * (3 + N_tracers)
+
+      -
+
+mpp_update_domain2d_r8_3d:
+   - 87811 calls (buffered to 46147):
+
+      - 26784: ocean_bihgen_friction_mod_mp_bihgen_friction
+         = Nt * (8~ + 2~ + 8~)
+      -> Buffered:
+         => 4464 (Nt * 3)
+
+      (Cum: 26784 | 4464)
+
+      - 17856: ocean_submesoscale_mod_mp_compute_psi
+         = 1488 * 3 * 4
+         = Nt * smooth_psi_num * 4
+
+      (Cum: 44640 | 22320)
+
+      - 11904: ice_model_mod_mp_transport
+         = 1488 * (1 + 4~ + 1 + 2~)
+         = Nt * (1 + 4~ + 1 + 2~)
+      -> Buffered:
+         = 5952
+         = Nt * 4
+
+      (Cum: 56544 | 28272)
+
+      - 10416: ocean_thickness_mod_mp_update_ucell_thickness
+         = 1488 * 7
+         = Nt * 7 (+ 3 * blob)
+
+      (Cum: 66960 | 38688)
+
+      -  8928: ocean_tracer_advect_mod_mp_advect_tracer_mdppm
+         = 1488 * 3 * 2
+         = Nt * N_tracer * 2
+         (Note: reduced halo??)
+
+      (Cum: 75889 | 47616??)
+
+      -  5952: ocean_model_mod_mp_update_ocean_model
+        = 1488 * (1 + 3~)
+        = 1488 * (1 + N_tracers)
+      -> Buffered:
+         = 2976
+
+      -  2979: xgrid_mod_mp_put_1_to_xgrid_order_2
+
+      -
+
+mpp_update_domain2d_r8_4d:
+   - 4464 calls
+
+   - 2976: ocean_submesoscale_mod_mp_compute_psi
+      = Nt * 2
+         (unbuffered)
+
+   (Cum: 2976)
+
+   - 1488: ocean_vert_kpp_mom4p1_mod_mp_vert_mix_kpp_mom4p1
+     = Nt
+
+   (Cum: 4464 - done!)
