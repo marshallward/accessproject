@@ -383,7 +383,7 @@ mpp_update_domain2d_r8_3d:
       - TODO??
 
       - 1 call to ``mpp_update_domains``
-        - 1 call from ``put_to_xgrid`` (``put_side1_to_xgrid``)
+        - 1 call from ``put_side1_to_xgrid`` (via ``put_to_xgrid`` interface)
           - 1 call from ``conservation_check`` (another interface)
             - ``setup_xmap``
 
