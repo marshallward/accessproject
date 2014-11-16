@@ -3,9 +3,9 @@ ISend
 
 3371728 sends (roughly, varies by process)
 
-   - 2027984   mpp_do_check_r8_3d      # Scalar1
+   - 2027984   "mpp_do_check_r8_3d"    # Scalar1   # Actually do_update!!
+    +  22320   mpp_do_update_r8_3d     # Scalar2
    - 1297536   mpp_do_update_r8_3dv    # Vector
-   -   22320   mpp_do_update_r8_3d     # Scalar2
    -   10421+5 put_side1_to_xgrid      # Coupling
    -    7448   get_side1_from_xgrid    # Coupling
    -    2976+3 put_1_to_xgrid_order_2  # Coupling
@@ -110,6 +110,14 @@ mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
    ocean_sbc_mod_mp_get_ocean_sbc:
       - 5952 calls
 
+      - Tally:
+        = ``nt`` *
+            ((``pme``, ``river``) + [use_waterflux] (``patm``, ``tmp_patm``)
+             + [use_waterflux_override_calving] ``river``
+             + [use_waterflux_override_fprec OR use_waterflux_override_evap]
+                  pme)
+        = 1488 * (2 + ? + ? + ?)
+
    (Sum: 403248)
 
 
@@ -154,7 +162,7 @@ mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
                \- ``nt`` calls ... ?
 
       - Tally:
-         = ``nt`` * [not energy_analysis_step] ``bih_viscosity``
+         = ``nt`` * [NOT energy_analysis_step] ``bih_viscosity``
          = 1488 * 1
          = 1488
 
@@ -267,8 +275,13 @@ mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
 
 mpp_update_domain2d_r8_3d:
 
-   - 87811 calls
-   \- 46147 calls to ``mpp_update_domains``
+    / 87811 ``mpp_update_domain`` calls
+   -
+    \- 46147 calls to ``mpp_do_check`` (allegedly)
+     - 10416 calls to ``mpp_do_update``
+
+      Actually...
+      => 56563 calls to ``mpp_do_update``
 
    ocean_bihgen_friction_mod_mp_bihgen_friction:
 
@@ -355,17 +368,59 @@ mpp_update_domain2d_r8_3d:
    (Cum: 75888)
    (Buf: 47616)
 
-      (Cum: 75889 | 47616??)
 
-      -  5952: ocean_model_mod_mp_update_ocean_model
+   ocean_model_mod_mp_update_ocean_model:
+      - 5952 calls
         = 1488 * (1 + 3~)
         = 1488 * (1 + N_tracers)
       -> Buffered:
          = 2976
 
-      -  2979: xgrid_mod_mp_put_1_to_xgrid_order_2
 
-      -
+   xgrid_mod_mp_put_1_to_xgrid_order_2:
+      - 2976 + 3 calls
+
+      - TODO??
+
+      - 1 call to ``mpp_update_domains``
+        - 1 call from ``put_to_xgrid`` (``put_side1_to_xgrid``)
+          - 1 call from ``conservation_check`` (another interface)
+            - ``setup_xmap``
+
+      - Tally:
+         = ``nt`` * (``ATM``, ``ICE``, ``OCN`` ??) * ``tmp``
+
+   ocean_vert_kpp_mom4p1_mod_mp_vert_mix_kpp_mom4p1:
+      - 1488 calls
+
+   ocean_vert_tidal_mod_mp_vert_mix_drag_bgrid:
+      - 1488 calls
+
+   ocean_bihgen_friction_mod_mp_ocean_bihgen_friction_init:
+      - 4 calls
+
+   ocean_tracer_mod_mp_ocean_prog_tracer_init:
+      - 3 calls
+
+   ocean_tracer_advect_mod_mp_ocean_tracer_advect_init:
+      - 2 calls
+
+   ocean_tracer_advect_mod_mp_fourth_sixth_init:
+      - 2 calls
+
+   ocean_tracer_mod_mp_ocean_diag_tracer_init:
+      - 2 calls
+
+   ice_model_mod_mp_ice_bottom_to_ice_top:
+      - 1 call
+
+   ocean_tracer_advect_mod_mp_quicker_init:
+      - 1 call
+
+   ocean_tracer_advect_mod_mp_mdfl_init:
+      - 1 call
+
+----
 
 mpp_update_domain2d_r8_4d:
    - 4464 calls
