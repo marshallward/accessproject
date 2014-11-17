@@ -22,7 +22,7 @@ CORE atmospheric field data sets.  It is primarily used for testing within
 CSIRO during CM development, although it has also been used in some research
 projects, such as CSIRO's BGC simulations (WOMBAT).
 
-The ARCCSS ("CoE") ocean research groups is conducting 0.25°-resolution ocean
+The ARCCSS ("CoE") ocean research group is conducting 0.25°-resolution ocean
 experiments with the GFDL coupled model based on MOM and SIS, the internal GFDL
 sea ice model.  The model has been used as part of several well-received
 academic publications, and remains an integral part of ongoing research.

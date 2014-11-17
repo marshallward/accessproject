@@ -1,8 +1,8 @@
-all: access_cm.pdf cm_timeline.pdf
+all: access_cm.pdf
 
 %.pdf : %.rst
 	rst2pdf $<
 
 .PHONY: clean
 clean:
-	rm -rf access_cm.pdf cm_timeline.pdf
+	rm -rf access_cm.pdf
