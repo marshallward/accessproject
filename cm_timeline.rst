@@ -53,6 +53,8 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
   - Document this "comm model" procedure
 
+  - Test and remove MPI calls in land cell checks
+
 - 0.25° MOM-SIS: (*complete*)
 
   - ISESS scaling submission
@@ -71,7 +73,7 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
   - Update codebases and supporting libraries (*complete*)
 
-  - Establish tentative configuration
+  - Establish tentative configuration (*partially complete*)
 
   - Initial profiling
 
@@ -94,16 +96,16 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
   - Run and compile with updated codebases (*partially complete*)
 
-  - Preliminary profiling (HPCtoolkit, ScoreP) (*partially complete*)
+  - Preliminary profiling (HPCtoolkit, ScoreP) (*rtially complete*)
 
 
 2015Q1
 ------
 
 The focus of this term should be to finalise the transition to ACCESS-OM and to
-integrate these changes into ACCESS-CM.  This also include porting the existing
-N96/1.0° model to the new framework.  NCI's priority should be to address any
-performance issues at each stage.
+integrate these changes into ACCESS-CM.  This also includes porting the
+existing N96/1.0° model to the new framework.  NCI's priority should be to
+address any performance issues at each stage.
 
 Given the many challenges associated with this goal, we should prepare for some
 of this work to extend to Q2.
@@ -124,7 +126,7 @@ of this work to extend to Q2.
 
   - Port 0.1° MOM-SIS to ACCESS-OM
 
-  - Confirm that improvements at 0.25° continue at 0.1° resolution
+  - Profile and compare to 0.25° configuration
 
 - N96/1.0° ACCESS-CM: (4 weeks)
 

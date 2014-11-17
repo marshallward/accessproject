@@ -2,6 +2,9 @@
 ACCESS-CM Optimization
 ======================
 
+The following document details the proposed goals of the ACCESS optimisation
+project in the areas of climate and ocean research.
+
 
 Background
 ==========
@@ -17,7 +20,7 @@ various studies.
 ACCESS-OM is an intermediate model which replaces the UM model with the fixed
 CORE atmospheric field data sets.  It is primarily used for testing within
 CSIRO during CM development, although it has also been used in some research
-projects, such as CSIRO's BGC simulations (WOMBAT?).
+projects, such as CSIRO's BGC simulations (WOMBAT).
 
 The ARCCSS ("CoE") ocean research groups is conducting 0.25°-resolution ocean
 experiments with the GFDL coupled model based on MOM and SIS, the internal GFDL
@@ -26,30 +29,34 @@ academic publications, and remains an integral part of ongoing research.
 
 OFAM is an ocean data assimilation model used and developed within CSIRO and
 BoM.  The current version is based on a 0.1° grid with near-global coverage
-excepting the Arctic seas.  The model is used operationally within BoM
-(Australian Navy?).
+excepting the Arctic seas.  The model is used operationally within BoM and
+research within CSIRO.
 
 
 Motivation
 ==========
 
-As part of preparation for CMIP6, ACCESS-CM and ACCESS-OM are currently in a
-state of redevelopment, and they lack stable experiment configurations that can
-used for scaling analysis.  Any formal profiling and scaling work at this stage
-may not reflect the future state of these projects.
+As part of preparation for CMIP6, the ACCESS-CM and ACCESS-OM models are
+currently in a state of redevelopment, and they lack stable experiment
+configurations that can used for scaling analysis.  Any formal profiling and
+scaling work at this stage may not reflect the future state of these projects.
 
-Additional points:
+A primary goal of these projects is to unite ACCESS-CM and ACCESS-OM under a
+single framework, motivated by the following factors:
 
-* ACCESS-CM and ACCESS-OM are currently being redeveloped in preparation for
-  CMIP6 and support for higher resolutions, along with ARCCSS contributions via
-  Nicholas Hannah
+* Both groups wish to run experiments at higher grid resolutions for academic
+  research, seasonal prediction, and as part of submissions to CMIP6.
 
-* ARCCSS oceans intend to replace MOM-SIS with ACCESS-OM, and eventually
-  ACCESS-CM, as part of ongoing efforts to coordinate resources with CAWCR
+* There are known bottlenecks in the MOM-SIS configuration related to its its
+  sea ice and coupling components.  Resolving these bottlenecks can be begin by
+  replacing them with ARCCSS components.
 
-* NCI has identified limits to SIS scalability, and ARCCSS will have to adopt a
-  new coupled framework in order to efficiently scale up to 0.1° resolution and
-  beyond.
+* A common framework ensures that both projects receive greater attention, and
+  will streamline support for these models on NCI platforms.
+
+* Adoption of ACCESS-OM within ARCCSS will allow greater collaboration between
+  CSIRO, BoM, and ARCCSS, as well as other partners within the Australian
+  research community.
 
 
 Proposed Goals
@@ -70,23 +77,25 @@ The following are immediate potential goals, some of which are near completion:
 NCI's role would be the following:
 
 * Ensure that these models receive sufficient access to system resources and
-  expertise within NCI to get them running
+  expertise within NCI to address any technical issues
 
-* Aggressively tackle the scalability during and after development
+* Assess and document the resource requirements for these models, as part of
+  vendoring for the next machine
+
+* Investigate the scalability during and after development
 
 * Identify the scaling bottlenecks and limits to scalability
 
 * Patch model source codes to resolve bottlenecks if possible
 
-Once these models have reached a sufficient state of
-foundations for the following projects:
+Once these models have reached a state where they can be used for research,
+focus will shift to the following projects:
 
 * Integration of updated ACCESS-OM into an updated ACCESS-CM framework
 
 * Porting N96/1.0° ACCESS-CM to the updated ACCESS-CM framework
 
 * Development of a N216/0.25° ACCESS-CM model
-
 
 
 Consolidation
