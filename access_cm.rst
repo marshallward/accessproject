@@ -41,15 +41,15 @@ currently in a state of redevelopment, and they lack stable experiment
 configurations that can used for scaling analysis.  Any formal profiling and
 scaling work at this stage may not reflect the future state of these projects.
 
-A primary goal of these projects is to unite ACCESS-CM and ACCESS-OM under a
-single framework, motivated by the following factors:
+Both CSIRO and ARCCSS seek to unite the ACCESS-CM and ACCESS-OM projects under
+a single framework, motivated by the following factors:
 
 * Both groups wish to run experiments at higher grid resolutions for academic
-  research, seasonal prediction, and as part of submissions to CMIP6.
+  research, seasonal prediction, and potential CMIP6 submissions.
 
 * There are known bottlenecks in the MOM-SIS configuration related to its its
-  sea ice and coupling components.  Resolving these bottlenecks can be begin by
-  replacing them with ARCCSS components.
+  sea ice and coupling components.  Resolving these bottlenecks can be address
+  by replacing them with optimised ARCCSS components.
 
 * A common framework ensures that both projects receive greater attention, and
   will streamline support for these models on NCI platforms.
@@ -58,9 +58,29 @@ single framework, motivated by the following factors:
   CSIRO, BoM, and ARCCSS, as well as other partners within the Australian
   research community.
 
+Active participation of NCI in this transition will ensure that scalability
+plays a key role in the development of ACCESS-CM, and that both projects will
+receive sufficient computational resources and support from NCI.
+
 
 Proposed Goals
 ==============
+
+We propose that NCI contribute to the projects listed below by providing
+oversight on their performance and contributing to their development in the
+following ways:
+
+* Ensure that these models receive sufficient access to system resources and
+  technical expertise within NCI to quickly address any technical issues
+
+* Assess and document the resource requirements for these models, as part of
+  vendoring for the next machine
+
+* Investigate the scalability during and after development
+
+* Identify the scaling bottlenecks and limits to scalability
+
+* Patch model source codes to resolve bottlenecks if possible
 
 
 Porting
@@ -73,20 +93,6 @@ The following are immediate potential goals, some of which are near completion:
 * Convert 0.25° global MOM-SIS to an updated ACCESS-OM (MOM-CICE) framework
 
 * Convert 0.1° global MOM-SIS to updated ACCESS-OM framework
-
-NCI's role would be the following:
-
-* Ensure that these models receive sufficient access to system resources and
-  expertise within NCI to address any technical issues
-
-* Assess and document the resource requirements for these models, as part of
-  vendoring for the next machine
-
-* Investigate the scalability during and after development
-
-* Identify the scaling bottlenecks and limits to scalability
-
-* Patch model source codes to resolve bottlenecks if possible
 
 Once these models have reached a state where they can be used for research,
 focus will shift to the following projects:
@@ -138,20 +144,24 @@ We highlight the following goals:
 
 NCI's role:
 
-* Confirm that the five projects run under the established MOM codebase
+* Confirm that the five projects run under common codebases, or that any forks
+  retain consistency with the main codebases
 
-* Ensure that datasets and configurations are accessible across projects
+* Ensure that all groups benefit from common performance optimisations
 
-* Provide independent scaling of current codebases
+* Communicate configuration settings (libraries, runtime) across groups
 
-* Communicate configuration settings through common runscripts
+* Ensure that datasets are accessible across projects
 
 
 Profiling
 ---------
 
-* Develop "computational models" for ACCESS-CM components as a function of
-  model configuration:
+In addition to standard profiling methods, NCI will seek to document the
+behaviour of these models through resource models:
+
+* For each ACCESS-CM submodel, we construct a "resource model" that estimates
+  resource usage as a function of model configuration:
 
   * Communication (MPI)
 
@@ -166,3 +176,228 @@ Profiling
   * Computational memory usage
 
 * Contribute to automated testing with automated profiling metrics
+
+This information will allow NCI to ensure that these models remain efficient on
+Raijin, and will provide us with the necessary information for the vendoring of
+future hardware.
+
+
+.. raw:: pdf
+
+    PageBreak
+
+
+Timeline
+========
+
+*NOTE: 2014 goes into greater detail since much of the work has already been
+done.*
+
+
+2014Q3 (*complete*)
+-------------------
+
+- 0.25° MOM-SIS:
+
+  - Fixed outstanding performance problems
+
+    - Hyperthreading resolved "process bottleneck"
+
+    - 12 yr/day performance (14 yr/day with 12 PPN)
+
+  - Land masking
+
+    - Confirmed reduction of CPU hours by 20%
+
+  - Profile generation
+
+    - Full profiles from HPCToolkit, ScoreP (Scalasca)
+
+    - Computational profiles from gprof
+
+    - Communication profiles from IPM, mpiP
+
+  - Potential energy optimization
+
+    - This was the largest source of MPI_Allreduce calls in MOM
+
+    - Reduction of MPI_Allreduce calls by 50x (vertical levels) in subroutine
+
+    - Patch submitted to official MOM codebase, tenatively approved
+
+  - Porting to Fujistu compilers (and FX10):
+
+    - Patch submitted and accepted into MOM codebase
+
+
+2104Q4 (ongoing)
+----------------
+
+The focus of this term is to resolve any outstanding issues in high-resolution
+ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
+
+- MOM: (2 weeks)
+
+  - Construct MOM's MPI communication model (*partially complete*)
+
+  - Document this "comm model" procedure
+
+  - Test and remove MPI calls in land cell checks
+
+- 0.25° MOM-SIS: (*complete*)
+
+  - ISESS scaling submission
+
+  - Submodel scaling
+
+    - MOM scalability up to 2000 CPUs (beyond?)
+
+    - Diagnosis of SIS & coupler bottlenecks at 500 CPUs
+
+- 0.25° ACCESS-OM: (2 weeks)
+
+  **Collaborator**: Nicholas Hannah
+
+  - Compile and run (*complete*)
+
+  - Update codebases and supporting libraries (*complete*)
+
+  - Establish tentative configuration (*partially complete*)
+
+  - Initial profiling
+
+  - Develop procedure for coupled scaling analysis
+
+- 0.1° MOM-SIS: (2 weeks)
+
+  **Collaborator**: Aidan Heerdegen
+
+  - Complete port to Raijin (*complete*)
+
+  - Scale beyond 2500 CPUs
+    (or determine why it is not possible)
+
+- N96/1.0° ACCESS-CM (1 week)
+
+  **Collaborators**: Hailin Yan, Martin Dix, Nicholas Hannah
+
+  - Document input files across submodels (*complete*)
+
+  - Run and compile with updated codebases (*partially complete*)
+
+  - Preliminary profiling (HPCtoolkit, ScoreP) (*rtially complete*)
+
+
+2015Q1
+------
+
+The focus of this term should be to finalise the transition to ACCESS-OM and to
+integrate these changes into ACCESS-CM.  This also includes porting the
+existing N96/1.0° model to the new framework.  NCI's priority should be to
+address any performance issues at each stage.
+
+Given the many challenges associated with this goal, we should prepare for some
+of this work to extend to Q2.
+
+- 0.25° ACCESS-OM: (3 weeks)
+
+  **Collaborator**: Nicholas Hannah
+
+  - Construct CICE and OASIS communication models
+
+  - Identify scalability bottlenecks within CICE and OASIS
+
+  - Implement and test potential code modifications to CICE and OASIS
+
+- 0.1° ACCESS-OM: (3 weeks, overlap with 0.25° ACCESS-OM)
+
+  **Collaborators**: Nicholas Hannah, Aidan Heerdegen
+
+  - Port 0.1° MOM-SIS to ACCESS-OM
+
+  - Profile and compare to 0.25° configuration
+
+- N96/1.0° ACCESS-CM: (4 weeks)
+
+  **Collaborators**: Hailin Yan, Martin Dix, Nicholas Hannah
+
+  - Update UM to 9.1+
+
+  - Implement IO server (for N216/0.25°)
+
+  - Assess any changes to scaling and profiling results
+
+- MOM: (2 weeks; optional)
+
+  - Optimise Allreduce operations in time-mean IO writes
+
+    - Currently one per timestep, change to one per write
+
+  - Organise a "MOM user's group" meeting to prepare for Q2 collaborations
+
+
+2015Q2
+------
+
+The focus of this term is to communicate our work to external projects in BoM
+and CSIRO, namely OFAM and CSIRO's BGC model.
+
+- Port OFAM to 0.1° global grid (2 weeks)
+
+  **Collaborators**: Justin Freeman, Russ Fiedler
+
+  - Develop a common 0.1° grid for OFAM and ACCESS-OM
+
+  - Confirm scalability of output results
+
+  - Investigate any potential IO issues unique to OFAM
+
+- 0.1° ACCESS BGC: (2 weeks)
+
+  **Collaborators**: Richard Matear, Matt Chamberlain, Russ Fiedler
+
+  - Implement CSIRO's BGC into either OFAM or ACCESS-OM 0.1° model
+
+  - Confirm configuration and scalability of results
+
+- 0.1° ACCESS-OM: (2 weeks; optional)
+
+  - Placeholder for any ongoing 0.1° ACCESS-OM issues
+
+- N96/0.25° ACCESS-CM (3 weeks)
+
+  - Port existing 0.25° ACCESS-OM work into a working ACCESS-CM with
+    low-resolution atmosphere
+
+  - Initial scalability tests
+
+- 3+ weeks available to resolve outstanding or unexpected issues
+
+  - Optionally, investigate a N216/1.0° ACCESS-CM configuration
+
+
+2015H2
+------
+
+Without specifying detail, the focus of this period should be on an
+implementation and scaling of a high-resolution atmosphere with a
+high-resolution ocean
+
+- N216/0.25° ACCESS-CM development
+
+- Resolve any outstanding issues from previous periods
+
+
+2016H1
+------
+
+This period should focus on adopting new technologies and preparing for
+machines beyond Raijin
+
+- MOM:
+
+  - Xeon Phi scaling tests
+
+  - MOM6 initial testing
+
+  - Scalability tests on off-site FX10 and post-FX10 platforms
