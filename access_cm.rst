@@ -70,23 +70,27 @@ We propose that NCI contribute to the projects listed below by providing
 oversight on their performance and contributing to their development in the
 following ways:
 
-* Ensure that these models receive sufficient access to system resources and
-  technical expertise within NCI to quickly address any technical issues
+* Acting as a technical consultant, to ensure that these models receive
+  sufficient access to system resources and technical expertise within NCI to
+  quickly address any technical issues
 
 * Assess and document the resource requirements for these models, as part of
   vendoring for the next machine
 
-* Investigate the scalability during and after development
+* Investigate the scalability during and after development, and ensure that it
+  remains a priority during development
 
-* Identify the scaling bottlenecks and limits to scalability
+* Identify any scaling bottlenecks and limits to scalability
 
-* Patch model source codes to resolve bottlenecks if possible
+* Contribute patches to the model source codes to resolve any scaling
+  bottlenecks
 
 
 Porting
 -------
 
-The following are immediate potential goals, some of which are near completion:
+The following are immediate potential goals, some of which are already near
+completion:
 
 * Port the 0.1° global MOM-SIS model to Raijin, and scale beyond 2500 CPUs
 
@@ -190,6 +194,9 @@ future hardware.
 Timeline
 ========
 
+An approximate timeline is shown below.  NCI's contribution to each stage has
+been detailed in the previous section.
+
 *NOTE: 2014 goes into greater detail since much of the work has already been
 done.*
 
@@ -254,7 +261,7 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
     - Diagnosis of SIS & coupler bottlenecks at 500 CPUs
 
-- 0.25° ACCESS-OM: (2 weeks)
+- 0.25° ACCESS-OM: (1 weeks)
 
   **Collaborator**: Nicholas Hannah
 
@@ -268,7 +275,7 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
   - Develop procedure for coupled scaling analysis
 
-- 0.1° MOM-SIS: (2 weeks)
+- 0.1° MOM-SIS: (1 week)
 
   **Collaborator**: Aidan Heerdegen
 
@@ -285,7 +292,7 @@ ocean scalability, and to begin the transition from MOM-SIS to ACCESS-OM.
 
   - Run and compile with updated codebases (*partially complete*)
 
-  - Preliminary profiling (HPCtoolkit, ScoreP) (*rtially complete*)
+  - Preliminary profiling (HPCtoolkit, ScoreP) (*partially complete*)
 
 
 2015Q1
@@ -301,7 +308,7 @@ of this work to extend to Q2.
 
 - 0.25° ACCESS-OM: (3 weeks)
 
-  **Collaborator**: Nicholas Hannah
+  **Collaborator**: Nicholas Hannah, Hailin Yan
 
   - Construct CICE and OASIS communication models
 
