@@ -1,33 +1,50 @@
 ISend
 =====
 
-3371728 sends (roughly, varies by process)
+3371728 sends (roughly; varies by process (why?))
 
-   - 2027984   "mpp_do_check_r8_3d"    # Scalar1   # Actually do_update!!
-    +  22320   mpp_do_update_r8_3d     # Scalar2
-   - 1297536   mpp_do_update_r8_3dv    # Vector
-   -   10421+5 put_side1_to_xgrid      # Coupling
-   -    7448   get_side1_from_xgrid    # Coupling
-   -    2976+3 put_1_to_xgrid_order_2  # Coupling
-   -    2976   cut_check               # Ice
-   -      62   load_xgrid              # Coupling
-   -       2   set_comm_get1           # Coupling
+   - 2027984   "mpp_domains_mod_mp_mpp_do_check_r8_3d" (? mpp_do_update?)
+    +  22320   mpp_domains_mod_mp_mpp_do_update_r8_3d
+   - 1297536   mpp_domains_mod_mp_mpp_do_update_r8_3dv
+   -   10421   xgrid_mod_mp_put_side1_to_xgrid
+   -    7448   xgrid_mod_mp_get_side1_from_xgrid
+   -    2976+3 xgrid_mod_mp_put_1_to_xgrid_order_2
+   -    2976   ice_grid_mod_mp_cut_check
+   -      62   xgrid_mod_mp_load_xgrid
+   -       2   xgrid_mod_mp_set_comm_get1
 
-Scalar1
--------
 
-mpp_domains_mod_mp_mpp_do_check_r8_3d:
+Scalar
+------
+
+mpp_domains_mod_mp_mpp_do_check_r8_3d
++ mpp_domains_mod_mp_mpp_do_update_r8_3d:
+
+   Notes:
+      - This may be a gprof error
+        Actual calls appear to be mpp_domains_mod_mp_mpp_do_update_r8_3d
+
+      - Need to sort this out:
+         22320 "real" mpp_do_update calls from 10416
+         (1488 * 7 mpp_do_update => 1488 * (2 * 7 + 1) mpp_send)
+
+    / 2027984 ``mpp_send`` (8x sends)
+    | + 22320 (non-8x sends)
+   -|
+    \- 202887: mpp_domains_mod_mp_mpp_update_domain2d_r8_2d
+     -  46147: mpp_domains_mod_mp_mpp_update_domain2d_r8_3d
+     -   4464: mpp_domains_mod_mp_mpp_update_domain2d_r8_4d
+
+     -  10416: mpp_domains_mod_mp_mpp_update_domain2d_r8_3d
+
    - 2027984 mpp_send calls
       = 8 adj. tiles * 253498 fields
-   from:
-      - 202887:   mpp_domains_mod_mp_mpp_update_domain2d_r8_2d
-      -  46147:   mpp_domains_mod_mp_mpp_update_domain2d_r8_3d
-      -   4464:   mpp_domains_mod_mp_mpp_update_domain2d_r8_4d
+
 
 mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
 
    - 420140 calls
-   - Contains 202887 mpp_do_check calls
+   - Contains 202887 mpp_do_check calls (supposedly!)
 
    ice_dyn_mod_mp_ice_dynamics:
 
@@ -63,7 +80,7 @@ mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
       - Total:
          = ``nt_cpl`` * (``num_part`` - 1) * ``nsteps_adv``
             * (``part_size``, ``h_snow``, ``h_ice``, ``t_ice1``, ``t_ice2``)
-         = 1488 * 5 * 5 * 1
+         = 1488 * 5 * 1 * 5
          = 37200
 
    (Sum: 358608)
@@ -265,11 +282,13 @@ mpp_domains_mod_mp_mpp_update_domain2d_r8_2d:
    ocean_bihgen_friction_mod_mp_ocean_bihgen_friction_init:
       - 1 call
 
+
    ice_model_mod_mp_transport
       - 0 calls
       - Tally:
          = ``nt`` * [slab_ice] ``h_ice(:,:,2)``
          = 0
+
 
 ----
 
@@ -282,6 +301,7 @@ mpp_update_domain2d_r8_3d:
 
       Actually...
       => 56563 calls to ``mpp_do_update``
+
 
    ocean_bihgen_friction_mod_mp_bihgen_friction:
 
@@ -337,6 +357,7 @@ mpp_update_domain2d_r8_3d:
    (Cum: 56544)
    (Buf: 28272)
 
+
    ocean_thickness_mod_mp_update_ucell_thickness:
       - 10416 calls
 
@@ -356,9 +377,11 @@ mpp_update_domain2d_r8_3d:
    (Cum: 66960)
    (Buf: 38688)
 
+
    ocean_tracer_advect_mod_mp_advect_tracer_mdppm:
 
       - 8928 calls
+      - flags=XUPDATE, YUPDATE (2)
 
       - Tally:
          = ``nt`` * ``n_tracers`` * (``tracer_mdppm``, ``tracer_mdppn``)
@@ -371,58 +394,182 @@ mpp_update_domain2d_r8_3d:
 
    ocean_model_mod_mp_update_ocean_model:
       - 5952 calls
-        = 1488 * (1 + 3~)
-        = 1488 * (1 + N_tracers)
-      -> Buffered:
+
+      - Tally:
+         = ``nt`` * (``Dens%rho_sailinity`` +
+                     {``num_prog_tracers`` * ``T_prog(n)%field``})
+         = 1488 * (1 + 3~)
+         = 5952
+
+      - Buffered:
+         = 1488 * (1 + 1)
          = 2976
+
+   (Cum: 81840)
+   (Buf: 50592)
 
 
    xgrid_mod_mp_put_1_to_xgrid_order_2:
+
+      Notes:
+         - Default is order_1, with no ``mpp_update_domains`` call;
+         - Only applies to 2D 'ATM' fields to exchange grid
+         - ``put_to_xgrid`` does self-buffering (like ``mpp_update_domains``)
+         - ``conservation_check``:
+            - 1 'ATM' -> ('ICE', 'OCN')
+            - 2 ('ICE', 'OCN') -> 'ATM'
+
       - 2976 + 3 calls
 
-      - TODO??
-
-      - 1 call to ``mpp_update_domains``
-        - 1 call from ``put_side1_to_xgrid`` (via ``put_to_xgrid`` interface)
-          - 1 call from ``conservation_check`` (another interface)
-            - ``setup_xmap``
+       / 1 call to ``mpp_update_domains``
+      -|
+       \ 1 call from ``put_side1_to_xgrid`` (via ``put_to_xgrid`` interface)
+            - ``nt`` calls to ``sfc_boundary_layer``
+            - ``nt`` calls from ``flux_down_from_atmos``
+         - (??) 1 call from ``conservation_check``
+            - 3 calls from ``setup_xmap``
 
       - Tally:
-         = ``nt`` * (``ATM``, ``ICE``, ``OCN`` ??) * ``tmp``
+         = 3 * check_data
+          + ``nt`` * ({Atm%Surf_diff%sst_miz, Atm%t_bot, Atm%z_bot, Atm%p_bot,
+                       Atm%u_bot, Atm%v_bot, Atm%p_surf, Atm%slp, Atm%gust}
+                      + {Atm%flux_lw, Atmos_boundary%u_star,
+                         Atm%Surf_diff%delta_u, Atm%Surf_diff%delta_v} )
+         = 3 + 1488 * (9~ + 4~)
+         = 3 + 1488 * 2
+         = 2979
+
+   (Cum: 84819)
+   (Buf: 53571)
+
 
    ocean_vert_kpp_mom4p1_mod_mp_vert_mix_kpp_mom4p1:
+
       - 1488 calls
+      - flags=NUPDATE+EUPDATE (2)
+
+      - Tally:
+         = ``nt`` * ``visc_cbu``
+         = 1488
+
+   (Cum: 86307)
+   (Buf: 55059)
+
 
    ocean_vert_tidal_mod_mp_vert_mix_drag_bgrid:
+
       - 1488 calls
 
+      - Tally:
+         = ``nt`` * ``diff_drag``
+         = 1488
+
+   (Cum: 87795)
+   (Buf: 56547)
+
+
    ocean_bihgen_friction_mod_mp_ocean_bihgen_friction_init:
-      - 4 calls
+
+       / called 1 time
+      -|
+       - 2 calls to ``mpp_compute_domains``
+       \ 1 call to ``ncar_boundary_scale_read`` (optimized out)
+          - 2 calls to ``mpp_compute_domains``
+
+      Tally:
+         = (``aiso_back``, ``aaniso_back``) + (``aiso_back``, ``aaniso_back``)
+         = 4
+
+   (Cum: 87799)
+   (Buf: 56551)
+
 
    ocean_tracer_mod_mp_ocean_prog_tracer_init:
+
       - 3 calls
+
+      - Tally:
+         = ``num_prog_tracers`` * ``T_prog(n)%field(:,:,:,tau)``
+         = 3
+
+   (Cum: 87802)
+   (Buf: 56554)
+
 
    ocean_tracer_advect_mod_mp_ocean_tracer_advect_init:
       - 2 calls
+      - (from ``gyre_overturn_diagnose_init`` ?)
+
+      Tally:
+         = (``local_basin_mask``, ``local_basin_mask_jp1``)
+         = 2
+
+   (Cum: 87804)
+   (Buf: 56556)
+
 
    ocean_tracer_advect_mod_mp_fourth_sixth_init:
+
       - 2 calls
+
+      - Tally:
+         = (``tmask_fourth``, ``tmask_sixth``)
+         = 2
+
+   (Cum: 87806)
+   (Buf: 56558)
+
 
    ocean_tracer_mod_mp_ocean_diag_tracer_init:
+
       - 2 calls
 
+      - Tally:
+         = [``num_diag_tracers`` AND ``restart_file``] ``T_diag(n)%field```
+         = 2
+
+   (Cum: 87808)
+   (Buf: 56560)
+
+
    ice_model_mod_mp_ice_bottom_to_ice_top:
+
       - 1 call
+
+      - Tally:
+         = ``Ice%part_size(:,:,1:2)``
+         = 1
+
+   (Cum: 87809)
+   (Buf: 56561)
+
 
    ocean_tracer_advect_mod_mp_quicker_init:
       - 1 call
 
+      - Tally:
+         = ``tmask_quick``
+         = 1
+
+   (Cum: 87810)
+   (Buf: 56562)
+
+
    ocean_tracer_advect_mod_mp_mdfl_init:
       - 1 call
+
+      - Tally:
+         = ``tmask_mdfl``
+         = 1
+
+   (Cum: 87811)
+   (Buf: 56563)
+
 
 ----
 
 mpp_update_domain2d_r8_4d:
+
    - 4464 calls
 
    - 2976: ocean_submesoscale_mod_mp_compute_psi
@@ -435,3 +582,77 @@ mpp_update_domain2d_r8_4d:
      = Nt
 
    (Cum: 4464 - done!)
+
+
+=========
+
+
+Vector
+======
+
+    / 1297536 ``mpp_send`` calls
+    | (8 * 162192)
+   -|
+    \ 162192 ``mpp_do_update_r8_3dv`` calls
+      (1488 * 109 fields)
+         - 163680 ``mpp_update_domain2d_r8_3dv`` calls
+           (1488 * 110 fields)
+
+
+163680: mpp_domains_mod_mp_mpp_update_domain2d_r8_3dv:
+   - 156240: mpp_domains_mod_mp_mpp_update_domain2d_r8_2dv
+      - 107136: ice_dyn_mod_mp_ice_dynamics
+      -  26784: ocean_barotropic_mod_mp_pred_corr_tropic_depth_bgrid
+      -  11904: ocean_operators_mod_mp_lap_t
+         - 11904: ocean_barotropic_mod_mp_ocean_eta_smooth
+         -  1488: ocean_vert_tidal_mod_mp_vert_mix_tidal
+      -   2976: ice_model_mod_mp_update_ice_model_slow
+      -   1488: ice_model_mod_mp_transport
+      -   1488: ice_model_mod_mp_ice_bottom_to_ice_top
+      -   1488: ocean_barotropic_mod_mp_ocean_barotropic_forcing
+      -   1488: ocean_barotropic_mod_mp_update_ocean_barotropic
+      -   1488: ocean_sbc_mod_mp_get_ocean_sbc
+   -   4464: ocean_submesoscale_mod_mp_compute_submeso_skewsion
+   -   1488: ice_model_mod_mp_avg_top_quantities
+   -   1488: ocean_model_mod_mp_update_ocean_model
+
+
+ice_dyn_mod_mp_ice_dynamics:
+
+   - Tally:
+      = ``nt`` * ``evp_sub_steps`` * (ui/vi)
+      = 1488 * 72 * 1
+      = 107136
+
+
+ocean_barotropic_mod_mp_pred_corr_tropic_depth_bgrid:
+
+   - ``nts`` = 16 = (2 * barotropic_steps // barotropic_halo)
+
+   - Tally:
+      = ``nt`` *
+         ([barotropic_halo > 1] (udrho_bt, forcing_bt)
+          + ``nts`` *
+            ([tripolar AND use_legacy_barotropic_halos] press_force_bt
+             + [udrho_bt_lap OR udrho_bt_bih] udrho_bt
+             + [do_update AND NOT use_legacy_barotropic_halos] udrho_bt))
+      = 1488 * (2 + 16 * (0 + 0 + 1))
+      = 1488 * 18
+      = 26784
+
+
+ocean_barotropic_mod_mp_ocean_eta_smooth
+
+   Note:
+      - calls LAP_T once for laplacian, twice for biharmonic
+      - LAP_T Tally: [tripolar AND update_domains] (fx/fy)
+
+   - 11904: ocean_barotropic_mod_mp_ocean_eta_smooth
+      - Laplacian: 1 + ``num_prog_tracers``
+      - Biharmonic: 2 + 2 * ``num_prog_tracers``
+
+   - Tally:
+      = ``nt`` * (2 + 2 * ``num_prog_tracers``)
+      = 1488 * (2 + 2 * 3)
+      = 11904
+
