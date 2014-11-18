@@ -28,7 +28,18 @@ Calls:
          = 1488 * 72 * 8 * 3~
          = 2571264 (unbuffered)
          = 857088 (buffered)
+      Size:
+         - nfield * nxt * halo * double
+            = 3 * 32 * 1 * 8
+            = 768 bytes
 
+         - nfield * nyt * halo * double
+            = 3 * 30 * 1 * 8
+            = 720 bytes
+
+         - nfield * halo * double
+            = 3 * 1 * 8
+            = 24 bytes
 
    Ice velocity:
       Count:

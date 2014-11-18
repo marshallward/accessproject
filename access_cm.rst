@@ -10,12 +10,12 @@ Background
 ==========
 
 ACCESS-CM is the climate model of the ACCESS model suite, consisting of the UM,
-MOM and CICE submodels, and the OASIS3-MCT coupler library.  All models include
-custom modifications to support OASIS communication and additional conversions
-of the coupling fields.  The model has primarily been used to produce
-Australian submissions to CMIP5, which were regarded as highly successful
-contributions.  It is also been used by BoM and ARCCSS as a research tool in
-various studies.
+MOM and CICE submodels, and the OASIS3-MCT coupler library.  Each model
+contains custom modifications to support OASIS communication and additional
+conversions of the coupling fields.  The model has primarily been used to
+produce Australian submissions to CMIP5, which were regarded as highly
+successful contributions.  It is also been used by BoM and ARCCSS as a research
+tool in various studies.
 
 ACCESS-OM is an intermediate model which replaces the UM model with the fixed
 CORE atmospheric field data sets.  It is primarily used for testing within
@@ -30,7 +30,7 @@ academic publications, and remains an integral part of ongoing research.
 OFAM is an ocean data assimilation model used and developed within CSIRO and
 BoM.  The current version is based on a 0.1° grid with near-global coverage
 excepting the Arctic seas.  The model is used operationally within BoM and
-research within CSIRO.
+research initiatives within CSIRO.
 
 
 Motivation
