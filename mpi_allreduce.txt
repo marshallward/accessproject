@@ -516,8 +516,49 @@
          - ocean_model_mod.ice_ocn_bnd_type_chksum
 
       - ocean_model_mod.ocean_model_end
+
          - ocean_tracer_mod.ocean_tracer_end
+            - ocean_tracer_mod.ocean_tracer_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 5 MPI_Allreduce
+
+            - ocean_tracer_util_mod.tracer_prog_chksum
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 3 MPI_Allreduce
+
+            - ocean_tracer_util_mod.tracer_diag_chksum
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 2 MPI_Allreduce
+
          - ocean_bih_friction_mod.ocean_bih_friction_end
+
+            - ocean_bih_friction_mod.ocean_bih_friction_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 1 MPI_Allreduce
+
+            - ocean_util_mod.write_chksum_2d
+               - mpp_mod.mpp_chksum_r8_3d
+                  - mpp_mod.mpp_chksum_i8_1d
+                     - mpp_mod.mpp_sum_int8_scalar
+                        - mpp_mod.mpp_sum_int8
+                           - 1 MPI_Allreduce
+
          - ocean_velocity_mod.ocean_velocity_end
          - ocean_barotropic_mod.ocean_barotropic_end
          - ocean_thickness_mod.ocean_thickness_end
