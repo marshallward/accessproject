@@ -6,6 +6,14 @@ The following document details the proposed goals of the ACCESS optimisation
 project in the areas of climate and ocean research.
 
 
+Revision Notes
+==============
+
+* Simon says to use CAWCR in place of BoM or CSIRO
+
+* OFAM is used operationally by the Australian Navy ("relocatable version"?)
+
+
 Background
 ==========
 

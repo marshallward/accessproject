@@ -2,7 +2,8 @@ mpp_sum:
 
    - 139026: mpp_mod_mp_mpp_sum_real8_scalar
       - 137448: mpp_domains_mod_mp_mpp_global_sum_r8_2d
-         - 74400: "ocean_velocity_diag_mod_mp_cfl_check1_bgrid"
+         * 74400: "ocean_velocity_diag_mod_mp_cfl_check1_bgrid"
+           (1488: "ocean_velocity_diag_mod_mp_cfl_check1_bgrid")
          - 34224: ocean_util_mod_mp_diagnose_sum
             - 40176: ocean_sbc_mod_mp_ocean_sbc_diag
                - 1488: ocean_sbc_mod_mp_get_ocean_sbc

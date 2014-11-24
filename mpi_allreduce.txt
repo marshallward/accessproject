@@ -1,0 +1,239 @@
+- MAIN
+
+   - coupler_main_IP_coupler_init
+      - atmos_model_mod.atmos_model_init
+         - diag_integral_mod.diag_integral_init
+            - mpp_mod.mpp_sum_real8_scalar
+               - 2 MPI_Allreduce
+
+      - data_override_mod.data_override_init
+         - data_override_mod.get_grid_version_2
+            - mpp_mod.mpp_min_real8
+               - 4 MPI_Allreduce
+            - mpp_mod.mpp_max_real8
+               - 4 MPI_Allreduce
+
+      - ocean_model_mod.ocean_model_init
+
+         - ocean_domains_mod.set_ocean_domain
+            - mpp_mod.mpp_max_int4
+               - 3 MPI_Allreduce
+            - mpp_mod.mpp_min_int4
+               - 1 MPI_Allreduce
+
+         - ocean_grids_mod.set_ocean_hgrid_arrays
+            - ocean_util_mod.write_chksum_2d
+               - mpp_mod.mpp_chksum_r8_2d
+                  - mpp_mod.mpp_chksum_i8_1d
+                     - mpp_mod.mpp_sum_int8_scalar
+                        - mpp_mod.mpp_sum_int8
+                           - 28 MPI_Allreduce
+
+         - ocean_topog_mod.ocean_topog_init
+
+            - mpp_mod.mpp_min_real8
+               - 1 MPI_Allreduce
+
+            - ocean_util_mod.write_chksum_2d
+               - mpp_mod.mpp_chksum_r8_2d
+                  - mpp_mod.mpp_chksum_i8_1d
+                     - mpp_mod.mpp_sum_int8_scalar
+                        - mpp_mod.mpp_sum_int8
+                           - 3 MPI_Allreduce
+
+            - ocean_util_mod.write_chksum_2d_int
+               - mpp_mod.mpp_chksum_i4_2d
+                  - mpp_mod.mpp_sum_int4_scalar
+                     - mpp_mod.mpp_sum_int4
+                        - 2 MPI_Allreduce
+
+         - ocean_grids_mod.set_ocean_vgrid_arrays
+
+            - mpp_mod.mpp_sum_real8
+               - 2 MPI_Allreduce
+
+            - mpp_mod.mpp_sum_real8_scalar
+               - mpp_mod.mpp_sum_real8
+                  - 4 MPI_Allreduce
+
+            - mpp_domains_mod.mpp_global_sum_r8_3d
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 2 MPI_Allreduce
+
+            - mpp_domains_mod.mpp_global_sum_r8_2d
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 2 MPI_Allreduce
+
+         - ocean_coriolis_mod.ocean_coriolis_init
+            - mpp_max_real8
+               - 1 MPI_Allreduce
+
+         - ocean_velocity_mod.ocean_velocity_init
+            - ocean_velocity_mod.check_gravity_wave_cfl
+               - mpp_mod.mpp_min_real8
+                  - 1 MPI_Allreduce
+            - ocean_velocity_mod.ocean_velocity_chksum
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 4 MPI_Allreduce
+
+         - ocean_barotropic_mod.ocean_barotropic_init
+
+            - ocean_domains_mod.set_ocean_domain
+               - mpp_mod.mpp_max_int4
+                  - 2 MPI_Allreduce
+               - mpp_mod.mpp_min_int4
+                  - 2 MPI_Allreduce
+
+            - mpp_domains_mod.mpp_global_sum_r8_2d
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 1 MPI_Allreduce
+
+            - mpp_mod.mpp_min_real8
+               - 1 MPI_Allreduce
+
+            - mpp_mod.mpp_max_real8
+               - 1 MPI_Allreduce
+
+         - ocean_operators_mod.ocean_operators_init
+         - ocean_advection_velocity_mod.ocean_advection_velocity_init
+         - ocean_density_mod.ocean_density_init
+         - ocean_submesoscale_mod.ocean_submesoscale_init
+         - ocean_tracer_advect_mod.ocean_tracer_advect_init
+         - ocean_diagnostics_mod.ocean_diag_init
+
+      - mpp_domains_mod.mpp_broadcast_domain_1
+
+      - flux_exchange_mod.flux_exchange_init
+
+      - coupler_main_IP_atmos_ice_land_chksum
+
+      - coupler_main_IP_ocean_chksum
+
+   - flux_exchange_mod.flux_init_stocks
+
+   - ocean_model_mod.update_ocean_model
+
+      - ocean_sbc_mod.get_ocean_sbc
+         - mpp_domains_mod.mpp_global_sum_r8_2d
+            - mpp_mod.mpp_sum_real8_scalar
+               - mpp_mod.mpp_sum_real8
+                  - 1488 MPI_Allreduce
+
+         - ocean_sbc_mod.ocean_sbc_diag
+            - ocean_util_mod.diagnose_sum
+               - mpp_domains_mpd.mpp_global_sum_r8_2d
+                  - mpp_mod.mpp_sum_real8_scalar
+                     - mpp_mod.mpp_sum_real8
+                        - 34224 MPI_Allreduce (23 * 1488)
+
+      - ocean_sbc_mod.flux_adjust
+         - mpp_domains_mod.mpp_global_sum_r8_2d
+            - mpp_mod.mpp_sum_real8_scalar
+               - mpp_mod.mpp_sum_real8
+                  - 1488 MPI_Allreduce
+
+      - ocean_barotropic_mod.ocean_eta_smooth
+         - mpp_domains_mod.mpp_global_min_r8_2d
+            - mpp_domains_mod.mpp_global_min_r8_3d
+               - mpp_mod.mpp_min_real8
+                  - 1488 MPI_Allreduce
+
+      - ocean_barotropic_mod.eta_and_pbot_diagnose
+         - mpp_domains_mod.mpp_global_sum_r8_2d
+            - mpp_mod.mpp_sum_real8_scalar
+               - mpp_mod.mpp_sum_real8
+                  - 1488 MPI_Allreduce
+
+      - ocean_density_mod.update_ocean_density
+         - ocean_density_mod.compute_density_diagnostics
+            - mpp_domains_mod.mpp_global_sum_r8_2d
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 5952 MPI_Allreduce (4 * 1488)
+
+      - ocean_diagnostics_mod.ocean_diagnostics
+
+         - ocean_tracer_diag_mod.ocean_tracer_diagnostics
+
+            - ocean_tracer_diag_mod.mass_conservation
+               - ocean_tracer_diag_mod.total_mass
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 2 MPI_Allreduce
+               - mpp_domains_mod.mpp_global_sum_r8_2d
+                  - mpp_mod.mpp_sum_real8_scalar
+                     - mpp_mod.mpp_sum_real8
+                        - 3 MPI_Allreduce
+
+            - ocean_tracer_diag_mod.tracer_conservation
+               - ocean_tracer_diag_mod.total_tracer
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 3 MPI_Allreduce
+               - mpp_domains_mod.mpp_global_sum_r8_2d
+                  - mpp_mod.mpp_sum_real8_scalar
+                     - mpp_sum.mpp_sum_real8
+                        - 31 MPI_Allreduce
+
+            - ocean_tracer_diag_mod.send_total_volume
+               - ocean_tracer_diag_mod.total_volume
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 1488 MPI_Allreduce
+
+            - ocean_tracer_diag_mod.send_total_tracer
+               - ocean_tracer_diag_mod.send_total_tracer
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 2976 MPI_Allreduce (2 * 1488)
+
+            - ocean_tracer_diag_mod.send_global_ave_tracer
+               - ocean_tracer_diag_mod.total_tracer
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 2976 MPI_Allreduce (2 * 1488)
+
+               - ocean_tracer_diag_mod.total_mass
+                  - mpp_domains_mod.mpp_global_sum_r8_2d
+                     - mpp_mod.mpp_sum_real8_scalar
+                        - mpp_mod.mpp_sum_real8
+                           - 2976 MPI_Allreduce (2 * 1488)
+
+            - ocean_tracer_diag_mod.send_surface_ave_tracer
+            - ocean_tracer_diag_mod.dzt_min_max
+            - ocean_tracer_diag_mod.tracer_min_max
+            - ocean_tracer_diag_mod.tracer_integrals
+            - ocean_tracer_diag_mod.tracer_change
+            - ocean_tracer_diag_mod.tracer_land_cell_check
+
+
+         - ocean_velocity_diag_mod.ocean_velocity_diagnostics
+
+            - ocean_velocity_diag_mod.kinetic_energy
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 1488 MPI_Allreduce
+            - ocean_velocity_diag_mod.potential_energy
+               - mpp_mod.mpp_sum_real8_scalar
+                  - mpp_mod.mpp_sum_real8
+                     - 1488 MPI_Allreduce
+
+   - memutils_mod.print_memuse_stats
+
+   - flux_exchange_mod.flux_check_stocks
+
+   - coupler_main_IP_coupler_end
+
+   - fms_mod.fms_end
