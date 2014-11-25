@@ -60,7 +60,7 @@
             - mpp_domains_mod.mpp_global_sum_r8_3d
                - mpp_mod.mpp_sum_real8_scalar
                   - mpp_mod.mpp_sum_real8
-                     - 2 MPI_Allreduce
+                     - 14 MPI_Allreduce
 
             - mpp_domains_mod.mpp_global_sum_r8_2d
                - mpp_mod.mpp_sum_real8_scalar
@@ -503,21 +503,90 @@
    - coupler_main_IP_coupler_end
 
       - coupler_main_IP_atmos_ice_land_chksum
+
          - atmos_model_mod.atmos_data_type_chksum
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 25 MPI_Allreduce
+
          - atmos_model_mod.lnd_ice_atm_bnd_type_chksum
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 20 MPI_Allreduce
+
          - ice_type_mod.ice_data_type_chksum
+
+            - mpp_mod.mpp_chksum_r8_3d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 32 MPI_Allreduce
+
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 31 MPI_Allreduce
+
          - ice_model_mod.atm_ice_bnd_type_chksum
+            - mpp_mod.mpp_chksum_r8_3d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 17 MPI_Allreduce
+
          - ice_model_mod.ocn_ice_bnd_type_chksum
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 6 MPI_Allreduce
+
          - land_model_mod.land_data_type_chksum
+
+            - mpp_mod.mpp_chksum_r8_3d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 12 MPI_Allreduce
+
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 3 MPI_Allreduce
+
          - land_model_mod.atm_lnd_bnd_type_chksum
+            - mpp_mod.mpp_chksum_r8_3d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 25 MPI_Allreduce
 
       - coupler_main_IP_ocean_chksum
+
          - ocean_model_mod.ocean_public_type_chksum
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 6 MPI_Allreduce
+
          - ocean_model_mod.ice_ocn_bnd_type_chksum
+            - mpp_mod.mpp_chksum_r8_2d
+               - mpp_mod.mpp_chksum_i8_1d
+                  - mpp_mod.mpp_sum_int8_scalar
+                     - mpp_mod.mpp_sum_int8
+                        - 15 MPI_Allreduce
 
       - ocean_model_mod.ocean_model_end
 
          - ocean_tracer_mod.ocean_tracer_end
+
             - ocean_tracer_mod.ocean_tracer_restart
                - fms_io_mod.save_restart
                   - mpp_mod.mpp_chksum_r8_3d
@@ -560,10 +629,95 @@
                            - 1 MPI_Allreduce
 
          - ocean_velocity_mod.ocean_velocity_end
+
+            - ocean_velocity_mod.ocean_velocity_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 6 MPI_Allreduce
+
+            - ocean_velocity_mod.ocean_velocity_chksum
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 4 MPI_Allreduce
+
          - ocean_barotropic_mod.ocean_barotropic_end
+
+            - ocean_barotropic_mod.ocean_barotropic_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_2d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 13 MPI_Allreduce
+
+               - ocean_util_mod.write_chksum_2d
+                  - mpp_mod.mpp_chksum_r8_2d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 25 MPI_Allreduce
+
          - ocean_thickness_mod.ocean_thickness_end
+
+            - ocean_thickness_mod.ocean_thickness_restart
+
+               - fms_io_mod.save_restart
+
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 6 MPI_Allreduce
+
+                  - mpp_mod.mpp_chksum_r8_2d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 1 MPI_Allreduce
+
+            - ocean_thickness_mod.thickness_chksum
+
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 27 MPI_Allreduce
+
+               - ocean_util_mod.write_chksum_2d
+                  - mpp_mod.mpp_chksum_r8_2d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 7 MPI_Allreduce
+
          - ocean_density_mod.ocean_density_end
+
+            - ocean_density_mod.ocean_density_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 7 MPI_Allreduce
+
+            - ocean_density_mod.ocean_density_chksum
+               - ocean_util_mod.write_chksum_3d
+                  - mpp_mod.mpp_chksum_r8_3d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 6 MPI_Allreduce
+
          - ocean_sbc_mod.ocean_sfc_end
+
+            - ocean_sbc_mod.ocean_sfc_restart
 
       - ice_type_mod.ice_model_end
 
