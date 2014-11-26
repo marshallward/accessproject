@@ -60,7 +60,7 @@
             - mpp_domains_mod.mpp_global_sum_r8_3d
                - mpp_mod.mpp_sum_real8_scalar
                   - mpp_mod.mpp_sum_real8
-                     - 14 MPI_Allreduce
+                     - 2 MPI_Allreduce
 
             - mpp_domains_mod.mpp_global_sum_r8_2d
                - mpp_mod.mpp_sum_real8_scalar
@@ -349,14 +349,14 @@
                - mpp_domains_mod.mpp_global_sum_r8_2d
                   - mpp_mod.mpp_sum_real8_scalar
                      - mpp_mod.mpp_sum_real8
-                        - 3 MPI_Allreduce
+                        - 6 MPI_Allreduce
 
             - ocean_tracer_diag_mod.tracer_conservation
                - ocean_tracer_diag_mod.total_tracer
                   - mpp_domains_mod.mpp_global_sum_r8_2d
                      - mpp_mod.mpp_sum_real8_scalar
                         - mpp_mod.mpp_sum_real8
-                           - 3 MPI_Allreduce
+                           - 6 MPI_Allreduce
 
                - mpp_domains_mod.mpp_global_sum_r8_2d
                   - mpp_mod.mpp_sum_real8_scalar
@@ -716,8 +716,13 @@
                               - 6 MPI_Allreduce
 
          - ocean_sbc_mod.ocean_sfc_end
-
             - ocean_sbc_mod.ocean_sfc_restart
+               - fms_io_mod.save_restart
+                  - mpp_mod.mpp_chksum_r8_2d
+                     - mpp_mod.mpp_chksum_i8_1d
+                        - mpp_mod.mpp_sum_int8_scalar
+                           - mpp_mod.mpp_sum_int8
+                              - 6 MPI_Allreduce
 
       - ice_type_mod.ice_model_end
 
