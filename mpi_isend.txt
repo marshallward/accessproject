@@ -1,0 +1,58 @@
+- coupler_main.coupler_init
+   - ice_type_mod.ice_model_init
+   - ocean_model_mod.ocean_model_init
+   - flux_exchange_mod.flux_exchange_init
+
+- ice_model_mod.update_ice_model_slow_up
+   - ice_model_mod.ice_bottom_to_ice_top
+      - mpp_domains_mod.mpp_update_domain2d_r8_3d
+         - mpp_domains_mod.mpp_do_update_r8_3d
+            - mpp_mod.mpp_send_real8_scalar
+               - mpp_mod.mpp_transmit_real8
+                  - 5 MPI_Isend (238r8)      # TODO
+
+      - mpp_domains_mod.mpp_update_domain2d_r8_2d
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     - 7445 MPI_Isend (177191r8)   # 5*1488 + 5
+
+      - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+         - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+            - mpp_domains_mod.mpp_do_update_r8_3dv
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     - 7440 MPI_Isend (354144r8)   # South: 5*1488
+
+- flux_exchange_mod.sfc_boundary_layer
+   - xgrid_mod.put_side1_to_xgrid
+   - xgrid_mod.put_side2_to_xgrid
+   - xgrid_mod.get_side1_from_xgrid
+
+- flux_exchange_mod.flux_down_from_atmos
+   - xgrid_mod.put_side1_to_xgrid
+
+- flux_exchange_mod.flux_to_to_atmos
+   - xgrid_mod.get_side1_from_xgrid
+
+- flux_exchange_mod.flux_land_to_ice
+   - xgrid_mod.put_side1_to_xgrid
+
+- ice_model_mod.update_ice_model_slow_dn
+   - ice_model_mod.update_ice_model_slow
+
+- ocean_model_mod.update_ocean_model
+   - ocean_sbc_mod.get_ocean_sbc
+   - ocean_vert_mix_mod.vert_mix_coeff
+   - ocean_barotropic_mod.ocean_eta_smooth
+   - ocean_barotropic_mod.eta_and_pbot_update
+   - ocean_submesoscale_mod.submeso_restrat
+   - ocean_tracer_mod.update_ocean_tracer
+   - ocean_barotropic_mod.eta_and_pbot_diagnose
+   - mpp_domains_mod.mpp_update_domain2d_r8_3d
+   - ocean_velocity_mod.ocean_explicit_accel_a
+   - ocean_barotropic_mod.ocean_barotropic_forcing
+   - ocean_barotropic_mod.update_ocean_barotropic
+   - ocean_thickness_mod.update_ucell_thickness
+   - mpp_domains_mod.mpp_update_domain2d_r8_3dv
