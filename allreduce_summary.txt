@@ -1,11 +1,11 @@
-- 426:coupler_init
+- 414:coupler_init
    - 2: atmos_init (2*r8)
    - 8: data_override_init (8*r8)
-   - 201: ocean_model_init
+   - 189: ocean_model_init
       - 4: set_ocean_domain (4*i4)
       - 28: set_ocean_hgrid_arrays (28*i8)
       - 6: ocean_topog_init (1*r8, 3*i8, 2*i4)
-      - 22: set_ocean_vgrid_arrays (2*50r8, 20*r8)
+      - 10: set_ocean_vgrid_arrays (2*50r8, 8*r8)
       - 1: ocean_coriolis_init (1*r8)
       - 5: ocean_velocity_init (1*r8, 4*i8)
          - 1: check_gravity_wave_cfl (1*r8)
@@ -37,32 +37,32 @@
       - 6: ocean_public_type_chksum (6*i8)
       - 15: ice_ocn_bnd_type_chksum (15*i8)
 - 12: flux_init_stocks (12*r8)
-- update_ocean_model
-   - get_ocean_sbc
-   - ocean_sbc_diag
-   - flux_adjust
-   - ocean_eta_smooth
-   - eta_and_pbot_diagnose
-   - update_ocean_density
-   - ocean_diagnostics
-      - ocean_tracer_diagnostics
-         - mass_conservation
-         - tracer_conservation
-         - send_total_volume
-         - send_total_tracer
-         - send_global_ave_tracer
-         - send_surface_ave_tracer
-         - dzt_min_max
-         - tracer_min_max
-         - tracer_integrals
-         - tracer_change
-         - tracer_land_cell_check
-      - ocean_velocity_diagnostics
-         - kinetic_energy
-         - potential_energy
+- 67811: update_ocean_model
+   -  1488: get_ocean_sbc (1488*r8)
+   - 34224: ocean_sbc_diag (34224*r8)
+   -  1488: flux_adjust (1488*r8)
+   -  1488: ocean_eta_smooth (1488*r8)
+   -  1488: eta_and_pbot_diagnose (1488*r8)
+   -  5952: update_ocean_density (5952*r8)
+   - 21683: ocean_diagnostics
+      - 18707: ocean_tracer_diagnostics
+         -    8: mass_conservation (8*r8)
+         -   37: tracer_conservation (37*r8)
+         - 1488: send_total_volume (1488*r8)
+         - 2976: send_total_tracer (2976*r8)
+         - 5952: send_global_ave_tracer (5952*r8)
+         - 5952: send_surface_ave_tracer (5952*r8)
+         -   62: dzt_min_max (62*r8)
+         -  186: tracer_min_max (186*r8)
+         -  465: tracer_integrals (465*r8)
+         - 1550: tracer_change (1550*r8)
+         -   31: tracer_land_cell_check (31*i4)
+      - 2976: ocean_velocity_diagnostics
+         - 1488: kinetic_energy (1488*r8)
+         - 1488: potential_energy (1488*r8)  # After patch
 - 4: print_memuse_stats (4*r8)
 - 60: flux_check_stocks (60*r8)
-- coupler_end
+- 356: coupler_end
    - 171: atmos_ice_land_chksum (171*i8)
       - 25: atmos_data_type_chksum (25*i8)
       - 20: lnd_ice_atm_bnd_type_chksum (20*i8)
@@ -74,7 +74,7 @@
    - 21: ocean_chksum (21*i8)
       -  6: ocean_public_type_chksum (6*i8)
       - 15: ice_ocn_bnd_type_chksum (15*i8)
-   - ocean_model_end
+   - 120: ocean_model_end
       - 10: ocean_tracer_end (10*i8)
          - 5: ocean_tracer_restart (5*i8)
          - 3: tracer_prog_chksum (3*i8)
@@ -94,7 +94,8 @@
       - 13: ocean_density_end
          - 7: ocean_density_restart (7*i8)
          - 6: ocean_density_chksum (6*i8)
-      - ocean_sfc_end
+      -  6: ocean_sfc_end
+         - 6: ocean_sfc_restart (6*i8)
    - 44: ice_model_end (8*r8, 36*i8)
 - 870: fms_end
    - 1: mpp_domains_exit (1*i4)
