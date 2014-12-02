@@ -1,11 +1,23 @@
 Notes
 =====
 
+- 82r8 = 45r8 + 36r8 + r8
+       = Corner transfer (side-corner-side)
+
 - 119r8 = 45r8 + 2*36r8 + 2r8
         = 5 messages to adjacent tiles on southern boundary
 
+- 128r8 = 2*45r8 + 36r8 + 2r8
+        = One north (or south) face transfer?
+
 - 166r8 = (2*45r8 + 2*36r8 + 4r8)
         = 8 messages to adjacent tiles along interior
+
+- 213r8 = 166r8 + 45r8 + 2r8
+        = Full 2D transfer plus extra NW/N/NE (or SW/S/SE) face
+
+- 379r8 = 213r8 + 166r8
+        = two full 2D tile transfers + 1 N/S face
 
 - Why do 7-msg tiles send the same amount of data as 8-msg??
 
@@ -106,7 +118,7 @@ Main
                      - mpp_mod.mpp_transmit_real8
                         -  32n: 535680 MPI_Isend (25498368r8)  # 1488 * 72 * 2 * 119r8
                         - 924n: 857088 MPI_Isend (35569152r8)  # 1488 * 72 * 2 * 166r8
-                        -   4n: 749952 MPI_Isend (35569152r8)
+                        -   4n: 749952 MPI_Isend (35569152r8)  # 1488 * 72 * 2 * 166r8
 
          - mpp_domains_mod.mpp_update_domain2d_r8_2d
             - mpp_domains_mod.mpp_update_domain2d_r8_3d
@@ -115,7 +127,7 @@ Main
                      - mpp_mod.mpp_transmit_real8
                         -  32n: 535680 MPI_Isend (38247552r8)  # 1488 * 72 * 3 * 119r8
                         - 924n: 857088 MPI_Isend (53353728r8)  # 1488 * 72 * 3 * 166r8
-                        -   4n: 749952 MPI_Isend (53353728r8)
+                        -   4n: 749952 MPI_Isend (53353728r8)  # 1488 * 72 * 3 * 166r8
 
       - mpp_domains_mod.mpp_update_domain2d_r8_2dv
          - mpp_domains_mod.mpp_update_domain2d_r8_3dv
@@ -183,59 +195,238 @@ Main
             - mpp_domains_mod.mpp_do_update_r8_3d
                - mpp_mod.mpp_send_real8_scalar
                   - mpp_mod.mpp_transmit_real8
-                     -  32n: 29760 MPI_Isend (708288r8)
-                     - 924n: 47616 MPI_Isend (988032r8)
-                     -   4n: 41664 MPI_Isend (988032r8)
+                     -  32n: 29760 MPI_Isend (708288r8) # 1488 * 4 * 119r8
+                     - 924n: 47616 MPI_Isend (988032r8) # 1488 * 4 * 166r8
+                     -   4n: 41664 MPI_Isend (988032r8) # 1488 * 4 * 166r8
 
    - ocean_vert_mix_mod.vert_mix_coeff
 
       - ocean_vert_kpp_mom4p1_mod.vert_mix_kpp_mom4p1
+
          - mpp_domains_mod.mpp_update_domain2d_r8_4d
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n:  7440 MPI_Isend (26560800r8) # 1488 * 150 * 119r8
+                        - 924n: 11904 MPI_Isend (37051200r8) # 1488 * 150 * 166r8
+                        -   4n: 10416 MPI_Isend (37051200r8) # 1488 * 150 * 166r8
+
          - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n: 1488 MPI_Isend (2678400r8) # 1488 * 50 * 36r8
+                     - 896n: 4464 MPI_Isend (6100800r8) # 1488 * 50 * 82r8
+                     -   2n: 5952 MPI_Isend (9523200r8) # 1488 * 50 * 128r8
+                     -  28n: 7440 MPI_Isend (9523200r8) # 1488 * 50 * 128r8
 
       - ocean_vert_tidal_mod.vert_mix_tidal
 
          - ocean_vert_tidal_mod.compute_bvfreq
             - mpp_domains_mod.mpp_update_domain2d_r8_2d
+               - mpp_domains_mod.mpp_update_domain2d_r8_3d
+                  - mpp_domains_mod.mpp_do_update_r8_3d
+                     - mpp_mod.mpp_send_real8_scalar
+                        - mpp_mod.mpp_transmit_real8
+                           -  32n:  7440 MPI_Isend (177072r8) # 1488 * 119r8
+                           - 924n: 11904 MPI_Isend (247008r8) # 1488 * 166r8
+                           -   4n: 10416 MPI_Isend (247008r8) # 1488 * 166r8
 
          - ocean_vert_tidal_mod.vert_mix_drag_bgrid
             - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n:  7440 MPI_Isend ( 8853600r8) # 1488 * 50 * 119r8
+                        - 924n: 11904 MPI_Isend (12350400r8) # 1488 * 50 * 166r8
+                        -   4n: 10416 MPI_Isend (12350400r8) # 1488 * 50 * 166r8
 
    - ocean_barotropic_mod.ocean_eta_smooth
 
       - mpp_domains_mod.mpp_update_domain2d_r8_2d
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n: 44640 MPI_Isend (1062432r8) # 1488 * 6 * 119r8
+                     - 924n: 71424 MPI_Isend (1482048r8) # 1488 * 6 * 166r8
+                     -   4n: 62496 MPI_Isend (1482048r8) # 1488 * 6 * 166r8
+
       - ocean_operators_mod.lap_t
+         - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+            - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+               - mpp_domains_mod.mpp_do_update_r8_3dv
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 59520 MPI_Isend (2833152r8) # 1488 * 8 * 2 * 119r8
+                        - 896n: 95232 MPI_Isend (3952128r8) # 1488 * 8 * 2 * 166r8
+                        -   2n: 83328 MPI_Isend (4511616r8) # 1488 * 8 * 379r8 ?
+                        -  14n: 95232 MPI_Isend (4511616r8) # 1488 * 8 * 379r8 ?
+                        -   2n: 83328 MPI_Isend (3928320r8) # 1488 * 8 * 2 * 165r8 ?
+                        -  14n: 95232 MPI_Isend (3928320r8) # 1488 * 8 * 2 * 165r8 ?
 
    - ocean_barotropic_mod.eta_and_pbot_update
       - mpp_domains_mod.mpp_update_domain2d_r8_2d
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n:  7440 MPI_Isend (177072r8) # 1488 * 119r8
+                     - 924n: 11904 MPI_Isend (247008r8) # 1488 * 166r8
+                     -   4n: 10416 MPI_Isend (247008r8) # 1488 * 166r8
 
    - ocean_submesoscale_mod.submeso_restrat
+
       - ocean_submesoscale_mod.compute_bldepth
+         - mpp_domains_mod.mpp_update_domain2d_r8_2d
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n:  7440 MPI_Isend (177072r8) # 1488 * 119r8
+                        - 924n: 11904 MPI_Isend (247008r8) # 1488 * 166r8
+                        -   4n: 10416 MPI_Isend (247008r8) # 1488 * 166r8
+
       - ocean_submesoscale_mod.compute_psi
+
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n:  89280 MPI_Isend (4249728r8) # 1488 * 24 * 119r8
+                     - 924n: 142848 MPI_Isend (5928192r8) # 1488 * 24 * 166r8
+                     -   4n: 124992 MPI_Isend (5928192r8) # 1488 * 24 * 166r8
+
+         - mpp_domains_mod.mpp_update_domain2d_r8_4d
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 14880 MPI_Isend (35414400r8) # 1488 * 4 * 50 * 119r8
+                        - 924n: 23808 MPI_Isend (49401600r8) # 1488 * 4 * 50 * 166r8
+                        -   4n: 20832 MPI_Isend (49401600r8) # 1488 * 4 * 50 * 166r8
+
       - ocean_submesoscale_mod.compute_submeso_skewsion
+         - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+            - mpp_domains_mod.mpp_do_update_r8_3dv
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n: 22320 MPI_Isend (53121600r8) # 1488 * 3 * 50 * 2 * 119r8
+                     - 896n: 35712 MPI_Isend (74102400r8) # 1488 * 3 * 50 * 2 * 166r8
+                     -   2n: 31248 MPI_Isend (84592800r8) # 1488 * 3 * 50 * 379r8
+                     -  14n: 35712 MPI_Isend (84592800r8) # 1488 * 3 * 50 * 379r8
+                     -   2n: 31248 MPI_Isend (73656000r8) # 1488 * 3 * 50 * 2 * 165r8 ?
+                     -  14n: 35712 MPI_Isend (73656000r8) # 1488 * 3 * 50 * 2 * 165r8 ?
 
    - ocean_tracer_mod.update_ocean_tracer
       - ocean_tracer_advect_mod.horz_advect_tracer
+         - ocean_tracer_advect_mod.advect_tracer_mdppm
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 13392 MPI_Isend (104457600r8) # 1488 * 12 * 50 * 117r8
+                        - 928n: 17856 MPI_Isend (144633600r8) # 1488 * 12 * 50 * 162r8
 
    - ocean_barotropic_mod.eta_and_pbot_diagnose
       - mpp_domains_mod.mpp_update_domain2d_r8_2d
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n:  7440 MPI_Isend (177072r8) # 1488 * 119r8
+                     - 924n: 11904 MPI_Isend (247008r8) # 1488 * 166r8
+                     -   4n: 10416 MPI_Isend (247008r8) # 1488 * 166r8
 
    - mpp_domains_mod.mpp_update_domain2d_r8_3d
+      - mpp_domains_mod.mpp_do_update_r8_3d
+         - mpp_mod.mpp_send_real8_scalar
+            - mpp_mod.mpp_transmit_real8
+               -  32n: 14880 MPI_Isend (35414400r8) # 1488 * 4 * 50 * 119r8
+               - 924n: 23808 MPI_Isend (49401600r8) # 1488 * 4 * 50 * 166r8
+               -   4n: 20832 MPI_Isend (49401600r8) # 1488 * 4 * 50 * 166r8
 
    - ocean_velocity_mod.ocean_explicit_accel_a
       - ocean_bih_friction_mod.bih_friction
+
          - ocean_bihgen_friction_mod.bihgen_friction
+
             - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 14880 MPI_Isend (159364800r8) # 1488 * 18 * 50 * 119r8
+                        - 924n: 23808 MPI_Isend (222307200r8) # 1488 * 18 * 50 * 166r8
+                        -   4n: 20832 MPI_Isend (222307200r8) # 1488 * 18 * 50 * 166r8
+
             - mpp_domains_mod.mpp_update_domain2d_r8_2d
+               - mpp_domains_mod.mpp_update_domain2d_r8_3d
+                  - mpp_domains_mod.mpp_do_update_r8_3d
+                     - mpp_mod.mpp_send_real8_scalar
+                        - mpp_mod.mpp_transmit_real8
+                           -  32n:  7440 MPI_Isend (177072r8) # 1488 * 119r8
+                           - 924n: 11904 MPI_Isend (247008r8) # 1488 * 166r8
+                           -   4n: 10416 MPI_Isend (247008r8) # 1488 * 166r8
+
          - mpp_domains_mod.mpp_update_domain2d_r8_2d
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 14880 MPI_Isend (354144r8) # 1488 * 2 * 119r8
+                        - 924n: 23808 MPI_Isend (494016r8) # 1488 * 2 * 166r8
+                        -   4n: 20832 MPI_Isend (494016r8) # 1488 * 2 * 166r8
 
    - ocean_barotropic_mod.ocean_barotropic_forcing
       - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+         - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+            - mpp_domains_mod.mpp_do_update_r8_3dv
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n:  7440 MPI_Isend (354144r8) # 1488 * 2 * 119r8
+                     - 896n: 11904 MPI_Isend (494016r8) # 1488 * 2 * 166r8
+                     -   1n:  8928 MPI_Isend (633888r8) # 1488 * 2 * 213r8 ?
+                     -  14n: 10416 MPI_Isend (633888r8) # 1488 * 2 * 213r8 ?
+                     -   1n:  8928 MPI_Isend (627936r8) # 1488 * 2 * 211r8 ?
+                     -   1n:  8928 MPI_Isend (488064r8) # 1488 * 2 * 164r8 ?
+                     -  14n: 10416 MPI_Isend (488064r8) # 1488 * 2 * 164r8 ?
+                     -   1n:  8928 MPI_Isend (491040r8) # 1488 * 2 * 165r8 ?
 
    - ocean_barotropic_mod.update_ocean_barotropic
       - ocean_barotropic_mod.pred_corr_tropic_depth_bgrid
+
+         - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+            - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+               - mpp_domains_mod.mpp_do_update_r8_3dv
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+                        -  32n: 126480 MPI_Isend ( 73388160r8) # 1488 * 2 * 119r8
+                        - 896n: 202368 MPI_Isend (108207360r8) # 1488 * 2 * 36360r8
+                        -   1n: 177072 MPI_Isend (111689280r8) # 1488 * 2 * 213r8 ?
+                        -  14n: 202368 MPI_Isend (111689280r8) # 1488 * 2 * 213r8 ?
+                        -   1n: 177072 MPI_Isend (111582144r8) # 1488 * 2 * 211r8 ?
+                        -   1n: 177072 MPI_Isend (107136000r8) # 1488 * 2 * 213r8 ?
+                        -  14n: 202368 MPI_Isend (107136000r8) # 1488 * 2 * 213r8 ?
+                        -   1n: 177072 MPI_Isend (107189568r8) # 1488 * 2 * 211r8 ?
+
+         - mpp_domains_mod.mpp_update_domain2d_r8_2d
+            - mpp_domains_mod.mpp_update_domain2d_r8_3d
+               - mpp_domains_mod.mpp_do_update_r8_3d
+                  - mpp_mod.mpp_send_real8_scalar
+                     - mpp_mod.mpp_transmit_real8
+
       - mpp_domains_mod.mpp_update_domain2d_r8_2d
+         - mpp_domains_mod.mpp_update_domain2d_r8_3d
+            - mpp_domains_mod.mpp_do_update_r8_3d
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+
       - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+         - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+            - mpp_domains_mod.mpp_do_update_r8_3dv
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
 
    - ocean_thickness_mod.update_ucell_thickness
       - mpp_domains_mod.mpp_update_domain2d_r8_3d
@@ -250,11 +441,11 @@ Main
       - mpp_domains_mod.mpp_do_update_r8_3dv
          - mpp_mod.mpp_send_real8_scalar
             - mpp_mod.mpp_transmit_real8
-               -  32n:  7440 MPI_Isend (17707200r8) # 1488 * 100 * 119r8
-               - 896n: 11904 MPI_Isend (24700800r8) # 1488 * 100 * 166r8
-               -   1n:  8928 MPI_Isend (31694400r8) # 1488 * 100 * 213r8 ?
-               -  14n: 10416 MPI_Isend (31694400r8) # 1488 * 100 * 213r8 ?
-               -   1n:  8928 MPI_Isend (31396800r8) # 1488 * 100 * 211r8 ?
-               -   1n:  8928 MPI_Isend (24403200r8) # 1488 * 100 * 164r8 ?
-               -  14n: 10416 MPI_Isend (24403200r8) # 1488 * 100 * 164r8 ?
-               -   1n:  8928 MPI_Isend (24552000r8) # 1488 * 100 * 165r8 ?
+               -  32n:  7440 MPI_Isend (17707200r8) # 1488 * 50 * 2 * 119r8
+               - 896n: 11904 MPI_Isend (24700800r8) # 1488 * 50 * 2 * 166r8
+               -   1n:  8928 MPI_Isend (31694400r8) # 1488 * 50 * 2 * 213r8 ?
+               -  14n: 10416 MPI_Isend (31694400r8) # 1488 * 50 * 2 * 213r8 ?
+               -   1n:  8928 MPI_Isend (31396800r8) # 1488 * 50 * 2 * 211r8 ?
+               -   1n:  8928 MPI_Isend (24403200r8) # 1488 * 50 * 2 * 164r8 ?
+               -  14n: 10416 MPI_Isend (24403200r8) # 1488 * 50 * 2 * 164r8 ?
+               -   1n:  8928 MPI_Isend (24552000r8) # 1488 * 50 * 2 * 165r8 ?

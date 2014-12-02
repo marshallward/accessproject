@@ -51,7 +51,7 @@
 
             - mpp_mod.mpp_sum_real8
                - 2 MPI_Allreduce
-               - 768000 bytes (2 * 960 * 8 * 50)
+               - 768000 bytes (2 * 960 * 50r8)
 
             - mpp_mod.mpp_sum_real8_scalar
                - mpp_mod.mpp_sum_real8
@@ -202,12 +202,12 @@
             - xgrid_mod.conservation_check_side1
                - mpp_mod.mpp_sum_real8
                   - 3 MPI_Allreduce
-                  - 69120 bytes (3 * 8 * 960 * 3)
+                  - 69120 bytes (3 * 960 * 3r8)
 
             - xgrid_mod.conservation_check_side2
                - mpp_mod.mpp_sum_real8
                   - 5 MPI_Allreduce
-                  - 115200 bytes (5 * 8 * 960 * 3)
+                  - 115200 bytes (5 * 960 * 3r8)
 
       - coupler_main_IP_atmos_ice_land_chksum
 
