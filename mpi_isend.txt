@@ -165,15 +165,27 @@ Main
    - ocean_sbc_mod.get_ocean_sbc
 
       - mpp_domains_mod.mpp_update_domain2d_r8_2dv
+         - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+            - mpp_domains_mod.mpp_do_update_r8_3dv
+               - mpp_mod.mpp_send_real8_scalar
+                  - mpp_mod.mpp_transmit_real8
+                     -  32n:  7440 MPI_Isend (354144r8) # 1488 * 2 * 119r8
+                     - 896n: 11904 MPI_Isend (494016r8) # 1488 * 2 * 166r8
+                     -   1n:  8928 MPI_Isend (633888r8) # 1488 * 2 * 213r8 ?
+                     -  14n: 10416 MPI_Isend (633888r8) # 1488 * 2 * 213r8 ?
+                     -   1n:  8928 MPI_Isend (627936r8) # 1488 * 2 * 211r8 ?
+                     -   1n:  8928 MPI_Isend (488064r8) # 1488 * 2 * 164r8 ?
+                     -  14n: 10416 MPI_Isend (488064r8) # 1488 * 2 * 164r8 ?
+                     -   1n:  8928 MPI_Isend (491040r8) # 1488 * 2 * 165r8 ?
+
+      - mpp_domains_mod.mpp_update_domain2d_r8_2d
          - mpp_domains_mod.mpp_update_domain2d_r8_3d
             - mpp_domains_mod.mpp_do_update_r8_3d
                - mpp_mod.mpp_send_real8_scalar
                   - mpp_mod.mpp_transmit_real8
-                     -  32n:  7440
-                     - 924n: 10416
-                     -   4n:  8928
-
-      - mpp_domains_mod.mpp_update_domain2d_r8_2d
+                     -  32n: 29760 MPI_Isend (708288r8)
+                     - 924n: 47616 MPI_Isend (988032r8)
+                     -   4n: 41664 MPI_Isend (988032r8)
 
    - ocean_vert_mix_mod.vert_mix_coeff
 
@@ -227,5 +239,22 @@ Main
 
    - ocean_thickness_mod.update_ucell_thickness
       - mpp_domains_mod.mpp_update_domain2d_r8_3d
+         - mpp_domains_mod.mpp_do_update_r8_3d
+            - mpp_mod.mpp_send_real8_scalar
+               - mpp_mod.mpp_transmit_real8
+                  -  32n: 52080 MPI_Isend (62152272r8) # 1488 * 351 * 119r8
+                  - 924n: 83328 MPI_Isend (86699808r8) # 1488 * 351 * 166r8
+                  -   4n: 72912 MPI_Isend (86699808r8) # 1488 * 351 * 166r8
 
    - mpp_domains_mod.mpp_update_domain2d_r8_3dv
+      - mpp_domains_mod.mpp_do_update_r8_3dv
+         - mpp_mod.mpp_send_real8_scalar
+            - mpp_mod.mpp_transmit_real8
+               -  32n:  7440 MPI_Isend (17707200r8) # 1488 * 100 * 119r8
+               - 896n: 11904 MPI_Isend (24700800r8) # 1488 * 100 * 166r8
+               -   1n:  8928 MPI_Isend (31694400r8) # 1488 * 100 * 213r8 ?
+               -  14n: 10416 MPI_Isend (31694400r8) # 1488 * 100 * 213r8 ?
+               -   1n:  8928 MPI_Isend (31396800r8) # 1488 * 100 * 211r8 ?
+               -   1n:  8928 MPI_Isend (24403200r8) # 1488 * 100 * 164r8 ?
+               -  14n: 10416 MPI_Isend (24403200r8) # 1488 * 100 * 164r8 ?
+               -   1n:  8928 MPI_Isend (24552000r8) # 1488 * 100 * 165r8 ?
